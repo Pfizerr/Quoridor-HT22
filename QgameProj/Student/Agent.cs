@@ -22,7 +22,6 @@ class Agent:BaseAgent {
         controller = new AgentController();
         buildGraph = true;
         N = SpelBräde.N;
-        Utility.N = N;
     }
 
     public override Drag SökNästaDrag(SpelBräde bräde) 
@@ -30,7 +29,7 @@ class Agent:BaseAgent {
 
         if(buildGraph)
         {
-            graph = new GraphImplementation(new GraphData(bräde, int N));
+            graph = new GraphImplementation(new GraphData(bräde, N));
             buildGraph = false;
         }
 

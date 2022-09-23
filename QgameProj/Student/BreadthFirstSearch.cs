@@ -1,22 +1,21 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Student
 {
-    public class BFS : PathAlgorithm
+    public class BreadthFirstSearch : PathAlgorithm
     {
+        private Graph graph;
         private bool[] marked;
-        private int edgeTo;
+        private int[] edgeTo;
         private int start;
 
-        public BFS(Graph graph, int start)
+        public BreadthFirstSearch(Graph graph, int start)
         {
+            this.graph = graph;
             this.start = start;
         }
 
-        public BFS()
+        public BreadthFirstSearch()
         {
 
         }
@@ -26,32 +25,13 @@ namespace Student
             this.start = start;
         }
 
-        public override Stack<int> Search(Graph graph, int start)
+        public bool HasPathTo(int end)
         {
-            Queue<int> queue = new Queue<int>();
-            marked[start] = true;
-            queue.Enqueue(start);
-            while(queue.Count > 0)
-            {
-                int v = queue.Dequeue();
-                for (int w in graph.AdjacentTo(v))
-                {
-                    if (!marked[w])
-                    {
-                        edgeTo[w] = v;
-                        marked[w] = true;
-                        queue.Enqueue(w);<a
-                    }
-                }
-            }
-        }
 
-        public bool HasPathTo(int v)
-        {
             return marked[v];
         }
-        
-        public Stack<int> PathTo(int v)
+
+        public Stack<int> PathTo(int end)
         {
             if (!HasPathTo(v))
             {
@@ -63,7 +43,29 @@ namespace Student
             {
                 path.Push(x);
                 path.Push(start);
-                return path;
+            }
+            return path;
+        }
+
+        public void Search(Graph graph, int start)
+        {
+            Queue<int> queue = new Queue<int>();
+            marked[start] = true;
+            queue.Enqueue(start);
+            while (queue.Count > 0)
+            {
+                int vertex = queue.Dequeue();
+                IEnumerator<int> enumerator = graph.AdjacentTo(vertex);
+                while (enumerator.MoveNext())
+                {
+                    int adjacentVertex = enumerator.Current;
+                    if (!marked[adjacentVertex])
+                    {
+                        edgeTo[adjacentVertex] = vertex;
+                        marked[adjacentVertex] = true;
+                        queue.Enqueue(adjacentVertex);
+                    }
+                }
             }
         }
     }

@@ -4,6 +4,8 @@ namespace Student
 {
     public interface PathAlgorithm
     {
-        Stack<int> Find(Graph graph, int start, int end);
+        void Search(Graph graph, int start);
+        bool HasPathTo(int end);
+        Stack<int> PathTo(int end);
     }
 }

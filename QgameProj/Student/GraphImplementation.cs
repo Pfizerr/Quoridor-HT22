@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QgameProj
+namespace Student
 {
     public class GraphImplementation : Graph
     {
+        int?[][] adj;
+
+        int N;
 
         public GraphImplementation(GraphData data) : this(data.Next)
         {
@@ -42,10 +45,10 @@ namespace QgameProj
                 {
                     bool h = (y > horizontalVertices.GetLength(1) - 1) ? false : horizontalVertices[x, y];
                     bool v = (x > verticalVertices.GetLength(0) - 1) ? false : verticalVertices[x, y];
-                    int center = Utility.ToInt(x, y);
-                    int right = Utility.OffsetAlongX(Utility.ToInt(x, y), 1);
-                    int top = Utility.OffsetAlongY(Utility.ToInt(x, y), 1);
-                    IEnumerator<int> enumerator = graph.AdjacentTo(center);
+                    int center = Utility.ToInt(x, y, N);
+                    int right = Utility.OffsetX(x, y, 1, N);
+                    int top = Utility.OffsetY(x, y, 1, N);
+                    IEnumerator<int> enumerator = AdjacentTo(center);
                     if (h || v)
                     {
                         while (enumerator.MoveNext())
@@ -68,7 +71,7 @@ namespace QgameProj
             }
         }
 
-        public void AddEdge(int v, int w)
+        public override void AddEdge(int v, int w)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -103,7 +106,7 @@ namespace QgameProj
                     adj[w][i] = null;
         }
 
-        public bool ContainsEdge(int v, int w)
+        public override bool ContainsEdge(int v, int w)
         {
             IEnumerator<int> enumerator1 = AdjacentTo(v);
             while (enumerator1.MoveNext())
@@ -112,7 +115,7 @@ namespace QgameProj
             return false;
         }
         
-        public IEnumerator<int> AdjacentTo(int v, int w)
+        public override IEnumerator<int> AdjacentTo(int v)
         {
             List<int> e = new List<int>();
             foreach (int? nullable in adj[v])
