@@ -11,11 +11,13 @@ class Agent:BaseAgent {
         Program.Start(new Agent());
     }
 
+    public static bool DEBUG;
 
     private AgentController controller;
     private Graph graph;
     private bool buildGraph;
     private int N;
+    
 
     public Agent() 
     { 

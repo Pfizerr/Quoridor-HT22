@@ -28,18 +28,18 @@ namespace Student
         public bool HasPathTo(int end)
         {
 
-            return marked[v];
+            return marked[end];
         }
 
         public Stack<int> PathTo(int end)
         {
-            if (!HasPathTo(v))
+            if (!HasPathTo(end))
             {
                 return null;
             }
 
             Stack<int> path = new Stack<int>();
-            for (int x = v; x != start; x = edgeTo[x])
+            for (int x = end; x != start; x = edgeTo[x])
             {
                 path.Push(x);
                 path.Push(start);
