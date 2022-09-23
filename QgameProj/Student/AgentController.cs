@@ -7,9 +7,18 @@ namespace Student
 {
     public class AgentController
     {
+        PathAlgorithm pathFinder;
+        Graph graph;
+        Graph graphRef;
+
         public AgentController()
         {
+            pathFinder = new BreadthFirstSearch();
+        }
 
+        public void Update(Graph graph)
+        {
+            this.graph = graph;
         }
 
         public Drag MakePlay()

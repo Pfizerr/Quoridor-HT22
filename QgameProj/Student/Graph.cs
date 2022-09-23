@@ -11,6 +11,8 @@ namespace Student
         {
         }
 
+        public abstract void Update(SpelBräde bräde);
+
         public abstract void AddEdge(int v, int w);
 
         public abstract IEnumerator<int> AdjacentTo(int v);

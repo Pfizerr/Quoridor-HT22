@@ -7,9 +7,11 @@ namespace Student
 {
     public class ShortestPathFinder
     {
-        public ShortestPathFinder()
+        private PathAlgorithm pathAlgorithm;
+
+        public ShortestPathFinder(PathAlgorithm pathAlgorithm)
         {
-            
+            this.pathAlgorithm = new BreadthFirstSearch();
         }
 
         public Stack<int> FindVectorToRow(int vectorId, int row)
