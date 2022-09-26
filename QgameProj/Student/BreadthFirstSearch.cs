@@ -9,42 +9,10 @@ namespace Student
         private int[] edgeTo;
         private int start;
 
-        public BreadthFirstSearch(Graph graph, int start)
-        {
-            this.graph = graph;
-            this.start = start;
-        }
 
         public BreadthFirstSearch()
         {
 
-        }
-
-        public void Initialize(Graph graph, int start)
-        {
-            this.start = start;
-        }
-
-        public bool HasPathTo(int end)
-        {
-
-            return marked[end];
-        }
-
-        public Stack<int> PathTo(int end)
-        {
-            if (!HasPathTo(end))
-            {
-                return null;
-            }
-
-            Stack<int> path = new Stack<int>();
-            for (int x = end; x != start; x = edgeTo[x])
-            {
-                path.Push(x);
-                path.Push(start);
-            }
-            return path;
         }
 
         public void Search(Graph graph, int start)
@@ -67,6 +35,28 @@ namespace Student
                     }
                 }
             }
+        }
+
+        public bool HasPathTo(int end)
+        {
+
+            return marked[end];
+        }
+
+        public Stack<int> PathTo(int end)
+        {
+            if (!HasPathTo(end))
+            {
+                return null;
+            }
+
+            Stack<int> path = new Stack<int>();
+            for (int x = end; x != start; x = edgeTo[x])
+            {
+                path.Push(x);
+                path.Push(start);
+            }
+            return path;
         }
     }
 }

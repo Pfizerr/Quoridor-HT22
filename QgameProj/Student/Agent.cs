@@ -15,24 +15,25 @@ class Agent:BaseAgent {
 
     private AgentController controller;
     private Graph graph;
-    private bool buildGraph;
+    private bool initialize;
     private int N;
     
 
     public Agent() 
     { 
-        controller = new AgentController();
-        buildGraph = true;
+        initialize = true;
         N = SpelBräde.N;
     }
 
     public override Drag SökNästaDrag(SpelBräde bräde) 
     {
 
-        if(buildGraph)
+        if(initialize)
         {
+
             graph = new GraphImplementation(new GraphData(bräde, N));
-            buildGraph = false;
+            controller = new AgentController(graph, N);
+            initialize = false;
         }
 
         graph.Update(bräde);
