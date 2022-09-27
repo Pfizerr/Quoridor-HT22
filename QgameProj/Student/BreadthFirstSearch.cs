@@ -12,7 +12,7 @@ namespace Student
 
         public BreadthFirstSearch()
         {
-
+            
         }
 
         public void Search(Graph graph, int start)

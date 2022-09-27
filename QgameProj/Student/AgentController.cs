@@ -16,13 +16,19 @@ namespace Student
 
         public AgentController(Graph graph, int N)
         {
+            this.graph = graph;
+            this.N = N;
+
             pathFinder = new BreadthFirstSearch();
+
+            mrow = N - 1;
+            orow = 0;
         }
 
-        public void Update(SpelBr‰de br‰de)
+        public void Update(SpelBr√§de br√§de)
         {
-            mpos = Utility.ToInt(br‰de.spelare[0].position, SpelBr‰de.N);
-            opos = Utility.ToInt(br‰de.spelare[1].position, SpelBr‰de.N);
+            mpos = Utility.ToInt(br√§de.spelare[0].position, SpelBr√§de.N);
+            opos = Utility.ToInt(br√§de.spelare[1].position, SpelBr√§de.N);
             mpath = PathToRow(mpos, orow);
             opath = PathToRow(opos, mrow);
         }
@@ -34,7 +40,7 @@ namespace Student
             Stack<int> path = new Stack<int>();
             int first = row * (N - 1);
             
-            if (pathAlgorithm.HasPathTo(first))
+            if (pathFinder.HasPathTo(first))
             {
                 path = pathFinder.PathTo(first);
             }
@@ -55,6 +61,8 @@ namespace Student
                     path = tPath;
                 }
             }
+
+            return path;
         }
 
         public Drag MakePlay()
@@ -67,11 +75,3 @@ namespace Student
         }
     }
 }
-
-
-/*
-        Stack<int> playerIdealPath;
-        int playerPosition;
-        Stack<int> opponentIdealPath;
-        int opponenotPosition;
-*/

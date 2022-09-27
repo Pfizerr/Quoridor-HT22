@@ -30,14 +30,13 @@ class Agent:BaseAgent {
 
         if(initialize)
         {
-
             graph = new GraphImplementation(new GraphData(bräde, N));
             controller = new AgentController(graph, N);
             initialize = false;
         }
 
         graph.Update(bräde);
-        controller.Update(graph);
+        controller.Update(bräde);
 
         return controller.MakePlay();
     }
