@@ -25,7 +25,7 @@ namespace Student
                     {
                         data.Push(center);
                         data.Push(Utility.OffsetX(x, y, 1, N));
-                        if (Agent.DEBUG) Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x + 1}, {y}] {x * N + x + 1} \n"));
+                        Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x + 1}, {y}] {x * N + x + 1} \n"));
                         E++;
                     }
 
@@ -33,7 +33,7 @@ namespace Student
                     {
                         data.Push(center);
                         data.Push(Utility.OffsetX(x, y, 1, N));
-                        if (Agent.DEBUG) Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x - 1}, {y}] {y * N + x - 1}\n"));
+                        Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x - 1}, {y}] {y * N + x - 1}\n"));
                         E++;
                     }
 
@@ -41,7 +41,7 @@ namespace Student
                     {
                         data.Push(center);
                         data.Push(Utility.OffsetY(x, y, 1, N));
-                        if (Agent.DEBUG) Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y + 1}] {((y + 1) * N + x)}\n"));
+                        Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y + 1}] {((y + 1) * N + x)}\n"));
                         E++;
                     }
 
@@ -49,10 +49,7 @@ namespace Student
                     {
                         data.Push(center);
                         data.Push(Utility.OffsetY(x, y, -1, N));
-
-                        if (Agent.DEBUG)
-                            Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y - 1}] {((y - 1) * N + x)}\n"));
-
+                        Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y - 1}] {((y - 1) * N + x)}\n"));
                         E++;
                     }
                 }

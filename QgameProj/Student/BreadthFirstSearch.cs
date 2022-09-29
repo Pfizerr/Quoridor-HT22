@@ -10,13 +10,21 @@ namespace Student
         private int start;
 
 
-        public BreadthFirstSearch()
+        public BreadthFirstSearch() 
         {
-            
+        }
+
+        public void Build(Graph graph, int start)
+        {
+            this.graph = graph;
+            this.start = start;
+            marked = new bool[graph.V];
+            edgeTo = new int[graph.V];
         }
 
         public void Search(Graph graph, int start)
         {
+            Build(graph, start);
             Queue<int> queue = new Queue<int>();
             marked[start] = true;
             queue.Enqueue(start);
@@ -51,11 +59,12 @@ namespace Student
             }
 
             Stack<int> path = new Stack<int>();
+
             for (int x = end; x != start; x = edgeTo[x])
             {
                 path.Push(x);
-                path.Push(start);
             }
+
             return path;
         }
     }

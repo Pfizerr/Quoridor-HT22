@@ -11,28 +11,26 @@ class Agent:BaseAgent {
         Program.Start(new Agent());
     }
 
-    public static bool DEBUG;
-
     private AgentController controller;
     private Graph graph;
-    private bool initialize;
+    private bool isInitialized;
     private int N;
     
 
     public Agent() 
     { 
-        initialize = true;
+        isInitialized = false;
         N = SpelBräde.N;
     }
 
     public override Drag SökNästaDrag(SpelBräde bräde) 
     {
 
-        if(initialize)
+        if(!isInitialized)
         {
-            graph = new GraphImplementation(new GraphData(bräde, N));
-            controller = new AgentController(graph, N);
-            initialize = false;
+            graph = new GraphImplementation(new GraphData(bräde, N), N);
+            controller = new AgentController(graph, bräde, N);
+            isInitialized = true;
         }
 
         graph.Update(bräde);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Student
 {
@@ -9,29 +10,28 @@ namespace Student
     {
         int?[][] adj;
 
-        int N;
-
-        public GraphImplementation(GraphData data) : this(data.Next)
+        public GraphImplementation(GraphData data, int N) : this(data.Next)
         {
+            this.N = N;
             E = data.Next;
-            //for (int i = 0; i < E; i++)
-            //{
-                //int? v = data.Next;
-                //int? w = data.Next;
-                //if (v == null || w == null)
-                    //Debugger.Break();
-                //AddEdge((int)v, (int)w);
-            //}
+            for (int i = 0; i < E; i++)
+            {
+                int? v = data.Next;
+                int? w = data.Next;
+                if (v == null || w == null)
+                    Debugger.Break();
+                AddEdge((int)v, (int)w);
+            }
         }
 
         public GraphImplementation(int V)
         {
             this.V = V;
-            //adj = new int?[V][];
-            //for (int i = 0; i < V; i++)
-            //{
-            //    adj[i] = new int?[4] { null, null, null, null };
-            //}
+            adj = new int?[V][];
+            for (int i = 0; i < V; i++)
+            {
+                adj[i] = new int?[4] { null, null, null, null };
+            }
         }
 
         public override void Update(SpelBräde bräde)

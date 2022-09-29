@@ -11,26 +11,19 @@ namespace Student
         PathAlgorithm pathFinder;
         Graph graph;
 
-        int N, mrow, orow, mpos, opos; 
+        int N, mRow, oRow, mPosition, oPosition, mPreviousPosition, oPreviousPosition;
+        bool mHasMoved, oHasMoved;
         Stack<int> mpath, opath;
 
-        public AgentController(Graph graph, int N)
+        public AgentController(Graph graph, SpelBräde bräde, int N)
         {
             this.graph = graph;
             this.N = N;
 
             pathFinder = new BreadthFirstSearch();
 
-            mrow = N - 1;
-            orow = 0;
-        }
-
-        public void Update(SpelBräde bräde)
-        {
-            mpos = Utility.ToInt(bräde.spelare[0].position, SpelBräde.N);
-            opos = Utility.ToInt(bräde.spelare[1].position, SpelBräde.N);
-            mpath = PathToRow(mpos, orow);
-            opath = PathToRow(opos, mrow);
+            mRow = N - 1;
+            oRow = 0;
         }
 
         public Stack<int> PathToRow(int start, int row)
@@ -63,6 +56,19 @@ namespace Student
             }
 
             return path;
+        }
+        public void Update(SpelBräde bräde)
+        {
+            mHasMoved = (mPosition != mPreviousPosition);
+            oHasMoved = (oPosition != oPreviousPosition);
+            mPosition = Utility.ToInt(bräde.spelare[0].position, SpelBräde.N);
+            oPosition = Utility.ToInt(bräde.spelare[1].position, SpelBräde.N);
+
+            if ((!oHasMoved) || (!mHasMoved))
+            {
+                mpath = PathToRow(mPosition, mRow); //#* analysis may involve amortized analysis.
+                opath = PathToRow(oPosition, oRow);
+            }
         }
 
         public Drag MakePlay()
