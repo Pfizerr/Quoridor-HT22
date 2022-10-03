@@ -79,11 +79,19 @@ public class AgentController
         if (!player.LastMoved || !opponent.LastMoved)
         {
             pathFinder.Search(graph, Utility.ToInt(player.Position));
-            player.ShortestPath = pathFinder.PathToRow(player.DestinationRow, N);
+            player.Path = pathFinder.PathToRow(player.DestinationRow, N);
             pathFinder.Search(graph, Utility.ToInt(opponent.Position));
-            opponent.ShortestPath = pathFinder.PathToRow(opponent.DestinationRow, N);
+            opponent.Path = pathFinder.PathToRow(opponent.DestinationRow, N);
         }
         
+        if (player.Path.Count >= opponent.Path.Count)
+        {
+            behaviour.Transition(new WallBehaviour());
+        }
+        else
+        {
+            behaviour.Transition(new MoveBehaviour());
+        }
     }
 
     public Drag GetPlay()
@@ -106,30 +114,19 @@ public class MoveBehaviour : IBehaviour
     {
         Drag drag = new Drag();
         drag.typ = Typ.Flytta;
-        drag.point = Utility.ToPoint(player.ShortestPath.Pop());
+        drag.point = Utility.ToPoint(player.Path.Pop());
 
         return new Drag();
     }
 
     public void Transition(IBehaviour behaviour)
     {
+        if (behaviour is MoveBehaviour)
+        {
+            return;
+        }
     }
 }
-
-public class WallBehaviour : IBehaviour
-{
-    public Drag DoBehaviour(Player playerState, Opponent opponentState, SpelBräde board)
-    {
-        Drag drag = new Drag();
-
-        return new Drag();
-    }
-
-    public void Transition(IBehaviour behaviour)
-    {
-    }
-}
-
 
 public class Opponent : AgentState
 {
@@ -145,7 +142,7 @@ public class Opponent : AgentState
         
         if (!LastMoved)
         {
-            ShortestPath.Pop();
+            Path.Pop();
         }
     }
 }
@@ -210,9 +207,15 @@ public class AgentState
         protected set;
     }
 
+    public Point Direction
+    {
+        get;
+        protected set;
+    }
+
     protected int N;
 
-    public Stack<int> ShortestPath
+    public Stack<int> Path
     {
         get;
         set;
@@ -228,6 +231,10 @@ public class AgentState
     {
         Position = bräde.spelare[Identifier].position;
         LastMoved = (Position != PreviousPosition);
+        
+        if (Path.Peek() - 1 == Position)
+        {
 
+        }
     }
 }
