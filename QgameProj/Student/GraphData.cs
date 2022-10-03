@@ -6,9 +6,11 @@ namespace Student
 {
     public class GraphData
     {
+        private int N = SpelBräde.N;
+
         private Stack<int> data;
 
-        public GraphData(SpelBräde bräde, int N)
+        public GraphData(SpelBräde bräde)
         {
             var hNodes = bräde.horisontellaVäggar;
             data = new Stack<int>();
@@ -19,12 +21,12 @@ namespace Student
             {
                 for (int x = 0; x < hNodes.GetLength(0); x++)
                 {
-                    int center = Utility.ToInt(x, y, N);
+                    int center = Utility.ToInt(x, y);
 
                     if (x < hNodes.GetLength(1))
                     {
                         data.Push(center);
-                        data.Push(Utility.OffsetX(x, y, 1, N));
+                        data.Push(Utility.OffsetX(x, y, 1));
                         Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x + 1}, {y}] {x * N + x + 1} \n"));
                         E++;
                     }
@@ -32,7 +34,7 @@ namespace Student
                     if (x > 0)
                     {
                         data.Push(center);
-                        data.Push(Utility.OffsetX(x, y, 1, N));
+                        data.Push(Utility.OffsetX(x, y, 1));
                         Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x - 1}, {y}] {y * N + x - 1}\n"));
                         E++;
                     }
@@ -40,7 +42,7 @@ namespace Student
                     if (y < vNodes.GetLength(0))
                     {
                         data.Push(center);
-                        data.Push(Utility.OffsetY(x, y, 1, N));
+                        data.Push(Utility.OffsetY(x, y, 1));
                         Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y + 1}] {((y + 1) * N + x)}\n"));
                         E++;
                     }
@@ -48,7 +50,7 @@ namespace Student
                     if (y > 0)
                     {
                         data.Push(center);
-                        data.Push(Utility.OffsetY(x, y, -1, N));
+                        data.Push(Utility.OffsetY(x, y, -1));
                         Debug.WriteLine(String.Format($"new edge between v and w: (v: [{x}, {y}] {y * N + x}, w: [{x}, {y - 1}] {((y - 1) * N + x)}\n"));
                         E++;
                     }

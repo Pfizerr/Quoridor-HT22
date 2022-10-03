@@ -1,139 +1,175 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-
 namespace Student
 {
     public class AgentController
     {
-        PathAlgorithm pathFinder;
-        Graph graph;
+        IBehaviour behaviour;
+        SpelBräde bräde;
+        Opponent opponent;
+        Player player;
 
-        int N, mRow, oRow, mPosition, oPosition, mPreviousPosition, oPreviousPosition;
-        bool mHasMoved, oHasMoved;
-        Typ mPreviousPlayType;
-        int mStreak;
-        Point oPointPosition, oLastMovement;
+        int N;
 
-        Stack<int> mpath, opath;
-
-        public AgentController(Graph graph, SpelBräde bräde, int N)
+        public AgentController()
         {
-            this.graph = graph;
-            this.N = N;
-
-            pathFinder = new BreadthFirstSearch();
-
-            oPointPosition = bräde.spelare[1].position;
-            oPreviousPosition = Utility.OffsetY(oPointPosition.X, oPointPosition.Y, 1);
-            oRow = 0;
-            /*mPreviousPosition = Utility.ToInt(bräde.spelare[0].position, N);*/
-            mPreviousPosition = 0;
-            mRow = N - 1;
+            opponent = new Opponent(1);
+            player = new Player(0);
+            N = SpelBräde.N;
         }
 
-        public Stack<int> PathToRow(int start, int row)
+        public void Update(SpelBräde bräde, Graph graph)
         {
-            pathFinder.Search(graph, start);
+            bool refreshPaths = (!player.LastMoved || !opponent.LastMoved) ? true : false;
 
-            Stack<int> path = new Stack<int>();
-            int first = row * N;
-            
-            if (pathFinder.HasPathTo(first)) //#* needed ? incorporate into loop ?
+            opponent.Update(bräde, graph, refreshPaths);
+            player.Update(bräde, graph, refreshPaths);
+
+            if (player.Path.Count >= opponent.Path.Count)
             {
-                path = pathFinder.PathTo(first);
-            }
-
-            for (int i = 1; i < N; i++)
-            {
-                int t = row * N + i;
-
-                if (!pathFinder.HasPathTo(t))
-                {
-                    continue;
-                }
-
-                Stack<int> tPath = pathFinder.PathTo(t);
-
-                if (tPath.Count < path.Count)
-                {
-                    path = tPath;
-                }
-            }
-            
-
-            return path;
-        }
-
-        public Drag MoveBehaviour(Drag drag)
-        { 
-            drag.typ = Typ.Flytta;
-
-            drag.point = Utility.ToPoint(mpath.Pop());
-
-            return drag;
-        }
-
-        public void Update(SpelBräde bräde)
-        {
-            mHasMoved = (mPosition != mPreviousPosition);
-            oHasMoved = (oPosition != oPreviousPosition);
-            mPosition = Utility.ToInt(bräde.spelare[0].position);
-
-            Point oPointPosition = bräde.spelare[1].position;
-            oPosition = Utility.ToInt(oPointPosition);
-
-            if ((!oHasMoved) || (!mHasMoved))
-            {
-                mpath = PathToRow(mPosition, mRow); 
-                opath = PathToRow(oPosition, oRow);
+                behaviour.Transition(new WallBehaviour());
             }
             else
             {
-                opath.Pop();
+                behaviour.Transition(new MoveBehaviour());
             }
         }
 
-        public Drag MakePlay()
+        public Drag GetPlay(Graph graph)
         {
-            Drag drag = new Drag();
-
-            
-            if (opath.Count < mpath.Count)
-            { 
-                drag = WallBehaviour(drag);
-            }
-            else
-            {
-                drag.typ = Typ.Flytta;
-                drag.point = Utility.ToPoint(mpath.Pop());
-            }
-
-            if (drag.typ == mPreviousPlayType)
-            {
-                mStreak++;
-            }
-
-
-            int dx = oPosition % N - oPreviousPosition % N;
-            int dy = (oPosition - oPosition % N - oPreviousPosition - oPreviousPosition % N) / N;
-            oLastMovement.X = (dx != 0) ? dx : oLastMovement.X;
-            oLastMovement.Y = (dy != 0) ? dy : oLastMovement.Y;
-
-            mPreviousPlayType = drag.typ;
-
-            return drag;
-        }
-
-        public Drag WallBehaviour(Drag drag)
-        {
-
-            return new Drag();
-
+            return behaviour.DoBehaviour(player, opponent, bräde, graph);
         }
     }
+
+
+
+
+    //     public class AgentController
+    //     {
+    //         PathAlgorithm pathFinder;
+    //         Graph graph;
+    // 
+    //         int N, mRow, oRow, mPosition, oPosition, mPreviousPosition, oPreviousPosition;
+    //         bool mHasMoved, oHasMoved;
+    //         Typ mPreviousPlayType;
+    //         int mStreak;
+    //         Point oPointPosition, oLastMovement;
+    // 
+    //         Stack<int> mpath, opath;
+    // 
+    //         public AgentController(Graph graph, SpelBräde bräde, int N)
+    //         {
+    //             this.graph = graph;
+    //             this.N = N;
+    // 
+    //             pathFinder = new BreadthFirstSearch();
+    // 
+    //             oPointPosition = bräde.spelare[1].position;
+    //             oPreviousPosition = Utility.OffsetY(oPointPosition.X, oPointPosition.Y, 1);
+    //             oRow = 0;
+    //             /*mPreviousPosition = Utility.ToInt(bräde.spelare[0].position, N);*/
+    //             mPreviousPosition = 0;
+    //             mRow = N - 1;
+    //         }
+    // 
+    //         public Stack<int> PathToRow(int start, int row)
+    //         {
+    //             pathFinder.Search(graph, start);
+    // 
+    //             Stack<int> path = new Stack<int>();
+    //             int first = row * N;
+    //             
+    //             if (pathFinder.HasPathTo(first)) //#* needed ? incorporate into loop ?
+    //             {
+    //                 path = pathFinder.PathTo(first);
+    //             }
+    // 
+    //             for (int i = 1; i < N; i++)
+    //             {
+    //                 int t = row * N + i;
+    // 
+    //                 if (!pathFinder.HasPathTo(t))
+    //                 {
+    //                     continue;
+    //                 }
+    // 
+    //                 Stack<int> tPath = pathFinder.PathTo(t);
+    // 
+    //                 if (tPath.Count < path.Count)
+    //                 {
+    //                     path = tPath;
+    //                 }
+    //             }
+    //             
+    // 
+    //             return path;
+    //         }
+    // 
+    //         public Drag MoveBehaviour(Drag drag)
+    //         { 
+    //             drag.typ = Typ.Flytta;
+    // 
+    //             drag.point = Utility.ToPoint(mpath.Pop());
+    // 
+    //             return drag;
+    //         }
+    // 
+    //         public void Update(SpelBräde bräde)
+    //         {
+    //             mHasMoved = (mPosition != mPreviousPosition);
+    //             oHasMoved = (oPosition != oPreviousPosition);
+    //             mPosition = Utility.ToInt(bräde.spelare[0].position);
+    // 
+    //             Point oPointPosition = bräde.spelare[1].position;
+    //             oPosition = Utility.ToInt(oPointPosition);
+    // 
+    //             if ((!oHasMoved) || (!mHasMoved))
+    //             {
+    //                 mpath = PathToRow(mPosition, mRow); 
+    //                 opath = PathToRow(oPosition, oRow);
+    //             }
+    //             else
+    //             {
+    //                 opath.Pop();
+    //             }
+    //         }
+    // 
+    //         public Drag MakePlay()
+    //         {
+    //             Drag drag = new Drag();
+    // 
+    //             
+    //             if (opath.Count < mpath.Count)
+    //             { 
+    //                 drag = WallBehaviour(drag);
+    //             }
+    //             else
+    //             {
+    //                 drag.typ = Typ.Flytta;
+    //                 drag.point = Utility.ToPoint(mpath.Pop());
+    //             }
+    // 
+    //             if (drag.typ == mPreviousPlayType)
+    //             {
+    //                 mStreak++;
+    //             }
+    // 
+    // 
+    //             int dx = oPosition % N - oPreviousPosition % N;
+    //             int dy = (oPosition - oPosition % N - oPreviousPosition - oPreviousPosition % N) / N;
+    //             oLastMovement.X = (dx != 0) ? dx : oLastMovement.X;
+    //             oLastMovement.Y = (dy != 0) ? dy : oLastMovement.Y;
+    // 
+    //             mPreviousPlayType = drag.typ;
+    // 
+    //             return drag;
+    //         }
+    // 
+    //         public Drag WallBehaviour(Drag drag)
+    //         {
+    // 
+    //             return new Drag();
+    // 
+    //         }
+    //     }
 }
 
 

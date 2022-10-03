@@ -10,11 +10,7 @@ namespace Student
         private int start;
 
 
-        public BreadthFirstSearch() 
-        {
-        }
-
-        public void Build(Graph graph, int start)
+        public BreadthFirstSearch(Graph graph, int start) 
         {
             this.graph = graph;
             this.start = start;
@@ -24,7 +20,6 @@ namespace Student
 
         public void Search(Graph graph, int start)
         {
-            Build(graph, start);
             Queue<int> queue = new Queue<int>();
             marked[start] = true;
             queue.Enqueue(start);
@@ -68,6 +63,7 @@ namespace Student
             return path;
         }
 
+        // Perhaps add as an extension method (not actually part of the 'typical' BFS-algorithm).
         public Stack<int> PathToRow(int row, int N)
         {
             Stack<int> path = new Stack<int>();

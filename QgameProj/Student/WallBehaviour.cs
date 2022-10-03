@@ -6,28 +6,48 @@ namespace Student
 {
     public class WallBehaviour : IBehaviour
     {
-        public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board)
+        public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board, Graph graph)
         {
             Drag drag = new Drag();
 
             Stack<int> path = opponent.Path;
+            int current = Utility.ToInt(opponent.Position);
+            int next = path.Peek();
+            int root = 0;
 
-            Point next = Utility.ToPoint(path.Peek());
+            if (opponent.Direction.X != 0)
+            {
+                drag.typ = Typ.Vertikal;
 
-            // A) x:1, y:0
-            // B) x:-1, y:0
-            // C) X:0, y:1
-            // D) x:0, y:-1
-            // 
-            // A) (1)x:[x+1] ,y:   (2)x: ,y: 
-            // B) (1)x: ,y:   (2)x: ,y: 
-            // C) (1)x: ,y:   (2)x: ,y: 
-            // D) (1)x: ,y:   (2)x: ,y: 
+                if (IsBlockable(current, next, drag.typ, graph))
+                {
+                    root = next;
+                }
+                else if (IsBlockable(current - 1, next - 1, drag.typ, graph))
+                {
+                    root = next - 1;
+                }
+                else System.Diagnostics.Debugger.Break();
+                drag.point = Utility.ToPoint(root);
+            }
+            else if (opponent.Direction.Y != 0)
+            {
+                drag.typ = Typ.Horisontell;
 
-
+                if (IsBlockable(current, next, drag.typ, graph))
+                {
+                    root = next;
+                }
+                if (IsBlockable(current, next, drag.typ, graph))
+                {
+                    root = next - SpelBräde.N;
+                }
+                else System.Diagnostics.Debugger.Break();
+                drag.point = Utility.ToPoint(root);
+            }
 
             return new Drag();
-        }   
+        }
 
         public void Transition(IBehaviour behaviour)
         {
@@ -36,8 +56,37 @@ namespace Student
                 return;
             }
 
+        }
+        // are nodes v and w blockable with a wall with given orientation placed between v and w
+        public bool IsBlockable(int v, int w, Typ type, Graph graph)
+        {
+            if (type == Typ.Flytta)
+            {
+                System.Diagnostics.Debugger.Break();
+                return false;
+            }
+            else if (type == Typ.Horisontell)
+            {
+                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v, w + 1))
+                {
+                    return true;
+                }
+            }
+            else if (type == Typ.Vertikal)
+            {
+                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v, w + SpelBräde.N))
+                {
+                    return true;
+                }
+            }
 
+            return false;
+        }
+
+        public enum WallOrientation
+        {
+            Vertical,
+            Horizontal
         }
     }
-
 }

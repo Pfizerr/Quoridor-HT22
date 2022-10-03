@@ -12,229 +12,40 @@ class Agent:BaseAgent {
         Program.Start(new Agent());
     }
 
-    private AgentController controller;
     private Graph graph;
     private bool isInitialized;
-    private int N;
+    private AgentController controller;
+    
+    public IBehaviour Behaviour
+    {
+        get; set;
+    }
     
 
     public Agent() 
     { 
         isInitialized = false;
-        N = SpelBräde.N;
     }
 
     public override Drag SökNästaDrag(SpelBräde bräde) 
     {
-
         if(!isInitialized)
         {
-            graph = new GraphImplementation(new GraphData(bräde, N), N);
-            //controller = new AgentController(graph, bräde, N);
+            graph = new GraphImplementation(new GraphData(bräde));
+            controller = new AgentController();
             isInitialized = true;
         }
 
         graph.Update(bräde);
-        //controller.Update(bräde);
+        controller.Update(bräde, graph);
 
-        return new Drag(); /*controller.MakePlay();*/
+
+        return controller.GetPlay(graph);
     }
 
     public override Drag GörOmDrag(SpelBräde bräde, Drag drag) 
     {
         System.Diagnostics.Debugger.Break();
         return SökNästaDrag(bräde);
-    }
-}
-
-
-
-public class AgentController
-{
-    PathAlgorithm pathFinder;
-    IBehaviour behaviour;
-    SpelBräde bräde;
-    Graph graph;
-
-    Opponent opponent;
-    Player player;
-
-    int N;
-
-    public AgentController()
-    {
-        opponent = new Opponent(1);
-        player = new Player(0);
-        N = SpelBräde.N;
-    }
-
-    public void Update(SpelBräde bräde, Graph graph)
-    {
-        this.bräde = bräde;
-        this.graph = graph;
-
-        opponent.Update(bräde);
-        player.Update(bräde);
-
-        if (!player.LastMoved || !opponent.LastMoved)
-        {
-            pathFinder.Search(graph, Utility.ToInt(player.Position));
-            player.Path = pathFinder.PathToRow(player.DestinationRow, N);
-            pathFinder.Search(graph, Utility.ToInt(opponent.Position));
-            opponent.Path = pathFinder.PathToRow(opponent.DestinationRow, N);
-        }
-        
-        if (player.Path.Count >= opponent.Path.Count)
-        {
-            behaviour.Transition(new WallBehaviour());
-        }
-        else
-        {
-            behaviour.Transition(new MoveBehaviour());
-        }
-    }
-
-    public Drag GetPlay()
-    {
-        return behaviour.DoBehaviour(player, opponent, bräde);
-    }
-}
-
-
-
-public interface IBehaviour
-{
-    Drag DoBehaviour(Player player, Opponent opponent, SpelBräde bräde);
-    void Transition(IBehaviour behaviour);
-}
-
-public class MoveBehaviour : IBehaviour
-{
-    public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board)
-    {
-        Drag drag = new Drag();
-        drag.typ = Typ.Flytta;
-        drag.point = Utility.ToPoint(player.Path.Pop());
-
-        return new Drag();
-    }
-
-    public void Transition(IBehaviour behaviour)
-    {
-        if (behaviour is MoveBehaviour)
-        {
-            return;
-        }
-    }
-}
-
-public class Opponent : AgentState
-{
-    public Opponent(int identifier) : base()
-    {
-        identifier = 1;
-        DestinationRow = 0;
-    }
-
-    public override void Update(SpelBräde bräde)
-    {
-        base.Update(bräde);
-        
-        if (!LastMoved)
-        {
-            Path.Pop();
-        }
-    }
-}
-
-public class Player : AgentState
-{
-    public Player(int N) : base()
-    {
-        Identifier = 0;
-        DestinationRow = N - 1;
-        PreviousPosition = Point.Zero;
-        DestinationRow = N - 1;
-    }
-
-    public override void Update(SpelBräde bräde)
-    {
-        base.Update(bräde);
-    }
-}
-
-public class AgentState
-{
-    public Point Position
-    {
-        get;
-        protected set;
-    }
-
-    public Point PreviousPosition
-    {
-        get;
-        protected set;
-    }
-
-    public int DestinationRow
-    {
-        get;
-        protected set;
-    }
-
-    public Typ PreviousPlayType
-    {
-        get;
-        protected set;
-    }
-
-    public int PreviousPlayTypeStreak
-    {
-        get;
-        protected set;
-    }
-
-    public bool LastMoved
-    {
-        get;
-        protected set;
-    }
-
-    public int Identifier
-    {
-        get;
-        protected set;
-    }
-
-    public Point Direction
-    {
-        get;
-        protected set;
-    }
-
-    protected int N;
-
-    public Stack<int> Path
-    {
-        get;
-        set;
-    }
-
-    public AgentState()
-    {
-        N = SpelBräde.N;
-        LastMoved = false;
-    }
-
-    public virtual void Update(SpelBräde bräde)
-    {
-        Position = bräde.spelare[Identifier].position;
-        LastMoved = (Position != PreviousPosition);
-        
-        if (Path.Peek() - 1 == Position)
-        {
-
-        }
     }
 }

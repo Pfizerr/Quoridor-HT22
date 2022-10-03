@@ -8,9 +8,11 @@ namespace Student
 {
     public class GraphImplementation : Graph
     {
-        int?[][] adj;
+        private int N = SpelBräde.N;
+        private int?[][] adj;
+        //private List<int?>[] adj;
 
-        public GraphImplementation(GraphData data, int N) : this(data.Next)
+        public GraphImplementation(GraphData data) : this(data.Next)
         {
             this.N = N;
             E = data.Next;
