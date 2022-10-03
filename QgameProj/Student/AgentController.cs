@@ -27,9 +27,10 @@ namespace Student
             pathFinder = new BreadthFirstSearch();
 
             oPointPosition = bräde.spelare[1].position;
-            oPreviousPosition = Utility.OffsetY(oPointPosition.X, oPointPosition.Y, 1, N);
+            oPreviousPosition = Utility.OffsetY(oPointPosition.X, oPointPosition.Y, 1);
             oRow = 0;
-            mPreviousPosition = Utility.ToInt(bräde.spelare[0].position, N);
+            /*mPreviousPosition = Utility.ToInt(bräde.spelare[0].position, N);*/
+            mPreviousPosition = 0;
             mRow = N - 1;
         }
 
@@ -61,36 +62,131 @@ namespace Student
                     path = tPath;
                 }
             }
+            
 
             return path;
         }
 
+        public Drag MoveBehaviour(Drag drag)
+        { 
+            drag.typ = Typ.Flytta;
+
+            drag.point = Utility.ToPoint(mpath.Pop());
+
+            return drag;
+        }
+
+        public void Update(SpelBräde bräde)
+        {
+            mHasMoved = (mPosition != mPreviousPosition);
+            oHasMoved = (oPosition != oPreviousPosition);
+            mPosition = Utility.ToInt(bräde.spelare[0].position);
+
+            Point oPointPosition = bräde.spelare[1].position;
+            oPosition = Utility.ToInt(oPointPosition);
+
+            if ((!oHasMoved) || (!mHasMoved))
+            {
+                mpath = PathToRow(mPosition, mRow); 
+                opath = PathToRow(oPosition, oRow);
+            }
+            else
+            {
+                opath.Pop();
+            }
+        }
+
+        public Drag MakePlay()
+        {
+            Drag drag = new Drag();
+
+            
+            if (opath.Count < mpath.Count)
+            { 
+                drag = WallBehaviour(drag);
+            }
+            else
+            {
+                drag.typ = Typ.Flytta;
+                drag.point = Utility.ToPoint(mpath.Pop());
+            }
+
+            if (drag.typ == mPreviousPlayType)
+            {
+                mStreak++;
+            }
+
+
+            int dx = oPosition % N - oPreviousPosition % N;
+            int dy = (oPosition - oPosition % N - oPreviousPosition - oPreviousPosition % N) / N;
+            oLastMovement.X = (dx != 0) ? dx : oLastMovement.X;
+            oLastMovement.Y = (dy != 0) ? dy : oLastMovement.Y;
+
+            mPreviousPlayType = drag.typ;
+
+            return drag;
+        }
+
         public Drag WallBehaviour(Drag drag)
         {
+
+            return new Drag();
+
+        }
+    }
+}
+
+
+
+/*
+  
+  
+  
+
+//#* analysis may involve amortized analysis.
+mpath = PathToRow(mPosition, mRow);
+
+
+
+Wall-placement/Movement:
+
+
+if (o2DMovement.Y != 0 || (mPreviousPlayType == Typ.Horisontell && mStreak == 1))
+            { // IF: opponent moved along Y-axis, OR: last move was H-placement with a streak of 1
+
+
+            // Will i move, or place a wall?
+            // * IF: opponent is closer to their target row,
+            // - THEN: place wall to increase the length of their ideal path by 1.
+            // ~ CONSIDER: previous wall-placing frequency
+            // ~~ CONSIDER: current/upcoming board segment wall prevalence
+            // ~~~ CONSIDER: expected (perhaps with regards to (^) and (^^)) distance to goal)
+            // ~~~~ CONSIDER: expected distance: 'Q' < certain value (with respect to opponents remaining wall count ('R'))
+            // etc. etc. etc....
+
+
+// '<' or '<=', what would the real opponent be using for threshold to place start placing walls, (consider Q)
+if (opath.Count < mpath.Count) 
+
+// opponent closer to goal than me.
+else
+
+// encapsulate functionality in function (if functionality beyond simple path traversal, i can't see why now
+// alternatively, simply traverse path.
+// drag = MoveBehaviour(drag);
+
+// State-machine for wall/movement behaviour?
+no, since there will only ever be two states.
+
+Wall-placement:
+
             // Do i want to place the wall horizontally or vertitally ?
             // * IF: opponents movement is along Y-axis (OR ,
             // - THEN: place wall along X-axis, i.e. horizontal placement.
             //
             // * IF: opponents mvovement is along X-axis ... [(-- ON PAPER --)]
 
-            int oPreviousHorizontalDirection, /*oPreviousVerticalDirection*/ oPrevious2DDirection;
-            /* Point o2DMovement = new Point(1, -1); */
 
-
-
-
-
-            int dx = oPosition % N - oPreviousPosition % N;
-            int dy = (oPosition - oPosition % N - oPreviousPosition - oPreviousPosition % N) / N;
-
-            int oPreviousMoveHorizontal = (oPreviousPosition == 0) ? 0 : dx;
-            int oPreviousMoveVertical = (oPreviousPosition == 0) ? 0 : dy;
-
-            Point o2DMovement = new Point(oPreviousMoveHorizontal, oPreviousMoveVertical);
-
-            if (o2DMovement.Y != 0 || (mPreviousPlayType == Typ.Horisontell && mStreak == 1))
-            { // IF: opponent moved along Y-axis, OR: last move was H-placement with a streak of 1
-                drag.typ = Typ.Horisontell;
 
                 // the wall is, for simplicity, chosen to block using a wall perpendicular to opponents current
                 // trajectory at a distance of 1 from the opponent (immediate block) with the wall offsetting so
@@ -100,7 +196,7 @@ namespace Student
                 // (REMINDER + EDIT TO COMMENTS): existing walls can disallow wall placements.
                 // Top-level conditional!
 
-                drag.point.Y = oPointPosition.Y + o2DMovement.Y;
+
 
                 // for right-leaning wall (extension), the x-offset will be 0, i.e., placement immediately under
                 // opponent, as for left-leaning wall, x-offset will be -1, placement under and left of opponent.
@@ -115,20 +211,28 @@ namespace Student
                 //                 }
 
 
-                if (oLastMovement.X == 1)
-                {
-                    drag.point.X = oPointPosition.X + oLastMovement.X - 1; // -1 to adjust for wall-extension offset.
-                }
 
-                drag.point.X = oPointPosition.X + oLastMovement.X;
-
-                // (REMINDER): perhaps (~atleast in some way) determine path and count its length post-placement
+// (REMINDER): perhaps (~atleast in some way) determine path and count its length post-placement
                 // to determine best choice of action.
-            }
 
-            return drag;
 
-        }
+
+
+
+Movement:
+
+
+
+
+
+
+// (initial?) movement behaviour setup, simply traverse path.
+
+
+
+
+
+*/
 
 //         public bool CanBlockVertex(int index)
 //         {
@@ -140,90 +244,3 @@ namespace Student
 //                 graph
 //             }
 //         }
-
-        public Drag MoveBehaviour(Drag drag)
-        {
-            drag.typ = Typ.Flytta;
-
-            // (initial?) movement behaviour setup, simply traverse path.
-
-            drag.point = Utility.ToPoint(mpath.Pop(), N);
-
-            return drag;
-        }
-
-        public void Update(SpelBräde bräde)
-        {
-            mHasMoved = (mPosition != mPreviousPosition);
-            oHasMoved = (oPosition != oPreviousPosition);
-            mPosition = Utility.ToInt(bräde.spelare[0].position, N);
-
-            Point oPointPosition = bräde.spelare[1].position;
-            oPosition = Utility.ToInt(oPointPosition, N);
-
-
-            if ((!oHasMoved) || (!mHasMoved))
-            {
-                mpath = PathToRow(mPosition, mRow); //#* analysis may involve amortized analysis.
-                opath = PathToRow(oPosition, oRow);
-            }
-            else
-            {
-                opath.Pop();
-            }
-        }
-
-        public Drag MakePlay()
-        {
-            Drag drag = new Drag();
-
-            // Will i move, or place a wall?
-            // * IF: opponent is closer to their target row,
-            // - THEN: place wall to increase the length of their ideal path by 1.
-            // ~ CONSIDER: previous wall-placing frequency
-            // ~~ CONSIDER: current/upcoming board segment wall prevalence
-            // ~~~ CONSIDER: expected (perhaps with regards to (^) and (^^)) distance to goal)
-            // ~~~~ CONSIDER: expected distance: 'Q' < certain value (with respect to opponents remaining wall count ('R'))
-            // etc. etc. etc....
-
-
-            // '<' or '<=', what would the real opponent be using for threshold to place start placing walls, (consider Q)
-            if (opath.Count < mpath.Count)
-            { // opponent closer to goal than me.
-
-                // State-machine for wall/movement behaviour?
-
-                drag = WallBehaviour(drag);
-
-            }
-            else
-            {
-                // encapsulate functionality in function (if functionality beyond simple path traversal, i can't see why now
-                // alternatively, simply traverse path.
-                //drag = MoveBehaviour(drag);
-
-                drag.typ = Typ.Flytta;
-                drag.point = Utility.ToPoint(mpath.Pop(), N); // traverse path
-            }
-
-
-
-
-            if (drag.typ == mPreviousPlayType)
-            {
-                mStreak++;
-            }
-
-            mPreviousPlayType = drag.typ;
-
-
-            int dx = oPosition % N - oPreviousPosition % N;
-            int dy = (oPosition - oPosition % N - oPreviousPosition - oPreviousPosition % N) / N;
-
-            oLastMovement.X = (dx != 0) ? dx : oLastMovement.X;
-            oLastMovement.Y = (dy != 0) ? dy : oLastMovement.Y;
-
-            return drag;
-        }
-    }
-}

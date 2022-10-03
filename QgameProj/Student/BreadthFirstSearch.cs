@@ -67,5 +67,36 @@ namespace Student
 
             return path;
         }
+
+        public Stack<int> PathToRow(int row, int N)
+        {
+            Stack<int> path = new Stack<int>();
+            int first = row * N;
+
+            if (HasPathTo(first)) //#* needed ? incorporate into loop ?
+            {
+                path = PathTo(first);
+            }
+
+            for (int i = 1; i < N; i++)
+            {
+                int t = row * N + i;
+
+                if (!HasPathTo(t))
+                {
+                    continue;
+                }
+
+                Stack<int> tPath = PathTo(t);
+
+                if (tPath.Count < path.Count)
+                {
+                    path = tPath;
+                }
+            }
+
+
+            return path;
+        }
     }
 }

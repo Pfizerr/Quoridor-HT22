@@ -45,9 +45,9 @@ namespace Student
                 {
                     bool h = (y > horizontalVertices.GetLength(1) - 1) ? false : horizontalVertices[x, y];
                     bool v = (x > verticalVertices.GetLength(0) - 1) ? false : verticalVertices[x, y];
-                    int center = Utility.ToInt(x, y, N);
-                    int right = Utility.OffsetX(x, y, 1, N);
-                    int top = Utility.OffsetY(x, y, 1, N);
+                    int center = Utility.ToInt(x, y);
+                    int right = Utility.OffsetX(x, y, 1);
+                    int top = Utility.OffsetY(x, y, 1);
                     IEnumerator<int> enumerator = AdjacentTo(center);
                     if (h || v)
                     {
