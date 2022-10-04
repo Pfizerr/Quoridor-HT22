@@ -6,20 +6,23 @@ namespace Student
 {
     public class Opponent : AgentState
     {
-        public Opponent(int identifier) : base()
+        private bool firstRoundSkip;
+
+        public Opponent() : base()
         {
-            identifier = 1;
+            firstRoundSkip = true;
+            Identifier = 1;
             DestinationRow = 0;
         }
 
-        public override void Update(SpelBräde bräde, Graph graph, bool refreshPath)
+        public override void Update(SpelBräde bräde, Graph graph)
         {
-            base.Update(bräde, graph, refreshPath);
-
-            if (!LastMoved)
+            if (HasMoved() && !firstRoundSkip)
             {
                 Path.Pop();
             }
+
+            base.Update(bräde, graph);
         }
     }
 }

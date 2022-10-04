@@ -6,17 +6,16 @@ namespace Student
 {
     public class Player : AgentState
     {
-        public Player(int N) : base()
+        public Player() : base()
         {
             Identifier = 0;
             DestinationRow = N - 1;
             PreviousPosition = Point.Zero;
-            DestinationRow = N - 1;
         }
 
-        public override void Update(SpelBräde bräde, Graph graph, bool refreshPath)
+        public override void Update(SpelBräde bräde, Graph graph)
         {
-            base.Update(bräde, graph, refreshPath);
+            base.Update(bräde, graph);
         }
     }
 }

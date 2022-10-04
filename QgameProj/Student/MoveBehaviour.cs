@@ -15,12 +15,14 @@ namespace Student
             return new Drag();
         }
 
-        public void Transition(IBehaviour behaviour)
+        public void Transition(AgentController controller, IBehaviour behaviour)
         {
             if (behaviour is MoveBehaviour)
             {
                 return;
             }
+
+            controller.Behaviour = behaviour;
         }
     }
 }
