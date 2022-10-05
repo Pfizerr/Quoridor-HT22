@@ -21,42 +21,11 @@ namespace Student
 
             if (opponent.Direction.X != 0)
             {
-                drag.typ = Typ.Vertikal;
 
-                if (IsBlockable(agentPosition, next, drag.typ, graph))
-                {
-                    rootPlacement = next;
-                }
-                //Traverse graph and discover direction to which opponent will go, this determines what side of opponent to place wall.
-                 /*else if (IsBlockable(current - 1, next - 1, drag.typ, graph))
-                 {
-                     root = next - 1;
-                 }*/
-                else System.Diagnostics.Debugger.Break();
-                drag.point = Utility.ToPoint(rootPlacement);
             }
             else if (opponent.Direction.Y != 0)
             {
-                drag.typ = Typ.Horisontell;
 
-                if (IsBlockable(agentPosition, next, drag.typ, graph))
-                {
-                    rootPlacement = next;
-                }
-                else if (IsBlockable(agentPosition - 1, next - 1, drag.typ, graph))
-                {
-                    rootPlacement = next - 1;
-                }
-                else if (IsBlockable(agentPosition - 2, next - 2, drag.typ, graph))
-                {
-                    rootPlacement = next = 2;
-                }
-                else if (false) // check new shortest path for each placement along axis. (possibly). (might fuck worst-case like royalty)
-                {
-
-                }
-                else System.Diagnostics.Debugger.Break();
-                drag.point = Utility.ToPoint(rootPlacement);
             }
 
             return drag;
@@ -75,6 +44,9 @@ namespace Student
                 //#* 
 
                 if (!result)
+                {
+                    result = TryVertical(opponent, current, next, out drag);
+                }
             }
 
 
