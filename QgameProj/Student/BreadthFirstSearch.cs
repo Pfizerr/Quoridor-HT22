@@ -46,14 +46,14 @@ namespace Student
             return marked[end];
         }
 
-        public Stack<int> PathTo(int end)
+        public Path PathTo(int end)
         {
             if (!HasPathTo(end))
             {
                 return null;
             }
 
-            Stack<int> path = new Stack<int>();
+            Path path = new Path();
 
             for (int x = end; x != start; x = edgeTo[x])
             {
@@ -64,9 +64,9 @@ namespace Student
         }
 
         // Perhaps add as an extension method (not actually part of the 'typical' BFS-algorithm).
-        public Stack<int> PathToRow(int row, int N)
+        public Path PathToRow(int row, int N)
         {
-            Stack<int> path = new Stack<int>();
+            Path path = new Path();
             int first = row * N;
 
             if (HasPathTo(first)) //#* needed ? incorporate into loop ?
@@ -83,9 +83,9 @@ namespace Student
                     continue;
                 }
 
-                Stack<int> tPath = PathTo(t);
+                Path tPath = PathTo(t);
 
-                if (tPath.Count < path.Count)
+                if (tPath.Size() < path.Size())
                 {
                     path = tPath;
                 }

@@ -26,7 +26,7 @@ namespace Student
             opponent.Update(bräde, graph);
             player.Update(bräde, graph);
 
-            if (player.Path.Count > opponent.Path.Count)
+            if (player.Path.Size() > opponent.Path.Size())
             {
                 Behaviour.Transition(this, new WallBehaviour());
             }

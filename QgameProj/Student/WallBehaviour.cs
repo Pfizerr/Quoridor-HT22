@@ -14,38 +14,40 @@ namespace Student
         {
             Drag drag = new Drag();
 
-            Stack<int> path = opponent.Path;
+            Path path = opponent.Path;
             int agentPosition = Utility.ToInt(opponent.Position);
             int next = path.Peek();
-            int rootPlacement = 0;
 
             if (opponent.Direction.X != 0)
             {
-
+//                 if ()
+//                 {
+//                     TryHorizontal(opponent, graph, agentPosition, next, out drag);
+//                 }
+                //TryVertical(opponent, graph, agentPosition, next, out drag);
             }
             else if (opponent.Direction.Y != 0)
             {
-
+                if (opponent.PreviousDirection.X != 0)
+                {
+                    TryVertical(opponent, graph, agentPosition, next, out drag);
+                }
+                TryHorizontal(opponent, graph, agentPosition, next, out drag);
             }
 
             return drag;
         }
 
-        public bool TryVertical(Opponent opponent, int current, int next, out Drag drag)
+        public bool TryVertical(Opponent opponent, Graph graph, int current, int next, out Drag drag)
         {
             drag = new Drag();
             drag.typ = Typ.Vertikal;
-            int root = 0;
 
             if (opponent.PreviousDirection.Y != 0)
             {
-                bool result = TryHorizontal(opponent, current, next, out drag);
-
-                //#* 
-
-                if (!result)
+                if (TryHorizontal(opponent, graph, current, next, out drag))
                 {
-                    result = TryVertical(opponent, current, next, out drag);
+                    return true;
                 }
             }
 
@@ -53,12 +55,31 @@ namespace Student
             return false;
         }
 
-        public bool TryHorizontal(Opponent opponent, int current, int next, out Drag drag)
+        public bool TryHorizontal(Opponent opponent, Graph graph, int current, int next, out Drag drag)
         {
             drag = new Drag();
             drag.typ = Typ.Horisontell;
-            int root = 0;
 
+            if (/* #*needed ? */!IsWithinBounds(current, drag.typ) || !IsWithinBounds(next, drag.typ))
+            {
+                return false;
+            }
+            else if (IsBlockable(current, next, drag.typ, graph))
+            {
+                drag.point = Utility.ToPoint(next);
+                return true;
+            }
+
+            int direction = opponent.PreviousDirection.X;
+            
+            if (direction != 0 && TryHorizontal(opponent, graph, current + direction, next + direction, out drag))
+            {
+                return true;
+            }
+            else if (TryVertical(opponent, graph, current, next, out drag))
+            {
+                return true;
+            }
 
             return false;
         }
