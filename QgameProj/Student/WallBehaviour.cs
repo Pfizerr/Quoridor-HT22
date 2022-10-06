@@ -16,24 +16,12 @@ namespace Student
 
             Path path = opponent.Path;
             int agentPosition = Utility.ToInt(opponent.Position);
-            int next = path.Peek();
+            int next = path.Peek(0);
 
-            if (opponent.Direction.X != 0)
-            {
-//                 if ()
-//                 {
-//                     TryHorizontal(opponent, graph, agentPosition, next, out drag);
-//                 }
-                //TryVertical(opponent, graph, agentPosition, next, out drag);
-            }
-            else if (opponent.Direction.Y != 0)
-            {
-                if (opponent.PreviousDirection.X != 0)
-                {
-                    TryVertical(opponent, graph, agentPosition, next, out drag);
-                }
-                TryHorizontal(opponent, graph, agentPosition, next, out drag);
-            }
+            TryHorizontal(opponent, graph, agentPosition, next, out drag);
+
+            previousType = drag.typ;
+            previousRootPlacement = Utility.ToInt(drag.point);
 
             return drag;
         }
@@ -59,7 +47,14 @@ namespace Student
         {
             drag = new Drag();
             drag.typ = Typ.Horisontell;
+            int direction = opponent.PreviousDirection.X;
 
+            if (previousType == Typ.Horisontell && IsBlockable(current + 2 * direction, previousRootPlacement + (2 * direction), drag.typ, graph))
+            {
+                drag.point = Utility.ToPoint(previousRootPlacement + (1 * direction));
+                return true;
+            }
+            
             if (/* #*needed ? */!IsWithinBounds(current, drag.typ) || !IsWithinBounds(next, drag.typ))
             {
                 return false;
@@ -70,13 +65,8 @@ namespace Student
                 return true;
             }
 
-            int direction = opponent.PreviousDirection.X;
             
             if (direction != 0 && TryHorizontal(opponent, graph, current + direction, next + direction, out drag))
-            {
-                return true;
-            }
-            else if (TryVertical(opponent, graph, current, next, out drag))
             {
                 return true;
             }
