@@ -73,6 +73,43 @@ namespace Student
 
             return node.Item;
         }
+
+        public int NextAlongX()
+        {
+            int previous = Peek(0);
+            for(int i = 1; i < N; i++)
+            {
+                int current = Peek(i);
+                int diff = current - previous;
+
+                if (diff == 1 || diff == -1)
+                {
+                    return diff;
+                }
+
+                previous = current;
+            }
+
+            return 0;
+        }
+        public int NextAlongY()
+        {
+            int previous = Peek(0);
+            for (int i = 1; i < N; i++)
+            {
+                int current = Peek(i);
+                int diff = current - previous;
+
+                if (diff == N || diff == -N)
+                {
+                    return diff;
+                }
+
+                previous = current;
+            }
+
+            return 0;
+        }
     }
 
 
