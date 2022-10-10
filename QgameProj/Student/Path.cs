@@ -10,7 +10,7 @@ namespace Student
     public class Path
     {
         private Node first;
-        private int N;
+        private int size;
 
         private class Node
         {
@@ -34,7 +34,7 @@ namespace Student
 
         public int Size()
         {
-            return N;
+            return size;
         }
 
         public void Push(int item)
@@ -43,14 +43,14 @@ namespace Student
             first = new Node();
             first.Item = item;
             first.Next = old;
-            N++;
+            size++;
         }
 
         public int Pop()
         {
             int item = first.Item;
             first = first.Next;
-            N--;
+            size--;
             return item;
         }
 
@@ -77,7 +77,7 @@ namespace Student
         public int NextAlongX()
         {
             int previous = Peek(0);
-            for(int i = 1; i < N; i++)
+            for(int i = 1; i < size; i++)
             {
                 int current = Peek(i);
                 int diff = current - previous;
@@ -95,14 +95,14 @@ namespace Student
         public int NextAlongY()
         {
             int previous = Peek(0);
-            for (int i = 1; i < N; i++)
+            for (int i = 1; i < size; i++)
             {
                 int current = Peek(i);
                 int diff = current - previous;
 
-                if (diff == N || diff == -N)
+                if (diff == SpelBräde.N || diff == -SpelBräde.N)
                 {
-                    return diff;
+                    return diff / SpelBräde.N;
                 }
 
                 previous = current;

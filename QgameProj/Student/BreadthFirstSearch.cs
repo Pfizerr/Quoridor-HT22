@@ -18,7 +18,7 @@ namespace Student
             edgeTo = new int[graph.V];
         }
 
-        public void Search(Graph graph, int start)
+        public override void Search(Graph graph, int start)
         {
             Queue<int> queue = new Queue<int>();
             marked[start] = true;
@@ -40,13 +40,13 @@ namespace Student
             }
         }
 
-        public bool HasPathTo(int end)
+        public override bool HasPathTo(int end)
         {
 
             return marked[end];
         }
 
-        public Path PathTo(int end)
+        public override Path PathTo(int end)
         {
             if (!HasPathTo(end))
             {
@@ -64,7 +64,7 @@ namespace Student
         }
 
         // Perhaps add as an extension method (not actually part of the 'typical' BFS-algorithm).
-        public Path PathToRow(int row, int N)
+        public override Path PathToRow(int row, int N)
         {
             Path path = new Path();
             int first = row * N;

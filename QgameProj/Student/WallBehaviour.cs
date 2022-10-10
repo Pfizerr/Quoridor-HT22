@@ -6,70 +6,140 @@ namespace Student
 {
     public class WallBehaviour : IBehaviour
     {
-        private int row;
-        private Typ type;
-        private int[9] root;
-        private bool isBlocking;
+        private bool hasStartedBlocking; //isBlocking
+        private int root, previousRoot, firstRoot, currentGrowth, row;
+        Typ type;
 
         public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board, Graph graph)
         {
             Drag drag = new Drag();
-            int current = Utility.ToInt(opponent.Position);
             Path path = opponent.Path;
+
+            int nextAlongX = path.NextAlongX();
+            int nextAlongY = path.NextAlongY();
+            int nextX = opponent.Direction.X;
+            int nextY = opponent.Direction.Y;
             int next = path.Peek(0);
 
-            int nextMoveAlongX = path.NextAlongX();
-            int nextMoveAlongY = path.NextAlongY();
+            bool result = true; 
 
-
-
-            if (!isBlocking)
+            if (!hasStartedBlocking)
             {
-                row = (current - current % SpelBräde.N ) / SpelBräde.N;
-                type = Typ.Horisontell;
-                isBlocking = true;
+                hasStartedBlocking = true;
+                row = (next - next % SpelBräde.N) / SpelBräde.N;
+                currentGrowth = nextAlongX;
 
-                int root_left = next + SpelBräde.N;
-                int root_right = current + SpelBräde.N;
-
+                if (nextX != 0)
+                {
+                    //TryVertical();
+                    firstRoot = root = next + nextAlongX;
+                    result = TryHorizontal(next + nextAlongX, nextAlongY, opponent, graph, out drag);
+                }
+                else if (nextY != 0)
+                {
+                    firstRoot = root = next + nextAlongX;
+                    result = TryHorizontal(next + nextAlongX, nextAlongY, opponent, graph, out drag);
+                }
+                else System.Diagnostics.Debugger.Break();
                 
-
-                bool result = TryVertical(current - (SpelBräde.N * nextMoveAlongY), nextMoveAlongY, nextMoveAlongX, graph, out drag);
-
-                // try all vertical left
-
-                
-
-                // try all vertical right
-
-
-
             }
+            else // HasStartedBlocking 
+            {
+                if (currentGrowth == 0)
+                {
+                    currentGrowth = (nextAlongX == 0) ? opponent.PreviousDirection.X : nextAlongX;
+                }
+
+                previousRoot = root;
+                root += currentGrowth;
+
+                if (nextAlongX == -1)
+                {
+                    TryLeft(next, nextAlongY, opponent, graph, out drag);
+                }
+                else if (nextAlongX == 1)
+                {
+                    TryRight(next, nextAlongY, opponent, graph, out drag);
+                }
+                else if (opponent.PreviousDirection.X == -1)
+                {
+                    TryLeft(next, nextAlongY, opponent, graph, out drag);
+                }
+                else if (opponent.PreviousDirection.X == 1)
+                {
+                    TryRight(next, nextAlongY, opponent, graph, out drag);
+                }
+            }
+
+            if (result == false)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
+            return drag;
         }
 
-        public bool TryVertical(int root, int moveY, int offset, Graph graph, out Drag drag)
+        public bool TryLeft(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
         {
-            int extension = root + 1;
-            moveY = moveY * SpelBräde.N;
-
-
-            IsWithinBounds(root, Typ.Horisontell);
-
-            if (graph.ContainsEdge(root, moveY) && graph.ContainsEdge(extension, moveY))
+            drag = new Drag();
+            for (int i = root; i > 0; i--)
             {
-                drag.typ = Typ.Horisontell;
-                drag.point = Utility.ToPoint(root);
-
-
-
+                if (TryHorizontal(i, moveY, opponent, graph, out drag))
+                {
+                    drag.point = Utility.ToPoint(root);
+                    return true;
+                }
             }
 
+            return false;
         }
 
+        public bool TryRight(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
+        {
+            drag = new Drag();
+            for (int i = firstRoot; i < SpelBräde.N - 1; i++)
+            {
+                if (TryHorizontal(root + i, moveY, opponent, graph, out drag))
+                {
+                    drag.point = Utility.ToPoint(root);
+                    return true;
+                }
+            }
 
+            return false;
+        }
 
+        public bool TryHorizontal(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
+        {
+            drag.typ = type = Typ.Horisontell;
+            drag.point = Point.Zero;
 
+            int ext = root + 1;
+            moveY = moveY * SpelBräde.N;
+            int current = root + moveY;
+            bool hasPath = false;
 
+            if (IsWithinBounds(root, Typ.Horisontell) &&
+                graph.ContainsEdge(root, current) &&
+                graph.ContainsEdge(ext, current + 1))
+            {
+                // Connected Components
+                using (BreadthFirstSearch bfs = new BreadthFirstSearch(graph, current))
+                {
+                    bfs.PredictForAlteredGraph(bfs, graph as AdjacencyList, current, opponent.DestinationRow, root, root + 1, out hasPath);
+
+                    // use this path for opponent instead of rebuilding next turn
+                }
+
+                if (hasPath)
+                {
+                    drag.point = Utility.ToPoint(root);
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public bool IsWithinBounds(int root, Typ type)
         {
@@ -86,65 +156,6 @@ namespace Student
             Point e = Utility.ToPoint(extension);
 
             if (0 <= r.X && r.X < N && 0 <= r.Y && r.Y < N)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
-
-        public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board, Graph graph)
-        {
-            Drag drag = new Drag();
-
-            Path path = opponent.Path;
-            int agentPosition = Utility.ToInt(opponent.Position);
-            int next = path.Peek(0);
-
-            TryHorizontal(opponent, graph, agentPosition, next, out drag);
-
-            previousType = drag.typ;
-            previousRootPlacement = Utility.ToInt(drag.point);
-
-            return drag;
-        }
-
-        public bool TryVertical(Opponent opponent, Graph graph, int current, int next, out Drag drag)
-        {
-            drag = new Drag();
-            drag.typ = Typ.Vertikal;
-
-            if (opponent.PreviousDirection.Y != 0)
-            {
-                if (TryHorizontal(opponent, graph, current, next, out drag))
-                {
-                    return true;
-                }
-            }
-
-
-            return false;
-        }
-
-        public bool TryHorizontal(Opponent opponent, Graph graph, int current, int next, out Drag drag)
-        {
-            drag = new Drag();
-            drag.typ = Typ.Horisontell;
-            int direction = opponent.PreviousDirection.X;
-
-            
-            if (!IsWithinBounds(current, drag.typ) || !IsWithinBounds(next, drag.typ))
-            {
-                return false;
-            }
-            else if (IsBlockable(current, next, drag.typ, graph))
-            {
-                drag.point = Utility.ToPoint(next);
-                return true;
-            }
-            if (direction != 0 && TryHorizontal(opponent, graph, current + direction, next + direction, out drag))
             {
                 return true;
             }

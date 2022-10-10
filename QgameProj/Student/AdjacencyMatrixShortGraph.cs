@@ -6,13 +6,13 @@ using System.Diagnostics;
 
 namespace Student
 {
-    public class GraphImplementation : Graph
+    public class AdjacencyMatrixShortGraph : Graph
     {
         private int N = SpelBräde.N;
         private int?[][] adj;
         //private List<int?>[] adj;
 
-        public GraphImplementation(GraphData data) : this(data.Next)
+        public AdjacencyMatrixShortGraph(GraphData data) : this(data.Next)
         {
             this.N = N;
             E = data.Next;
@@ -26,7 +26,7 @@ namespace Student
             }
         }
 
-        public GraphImplementation(int V)
+        public AdjacencyMatrixShortGraph(int V)
         {
             this.V = V;
             adj = new int?[V][];
@@ -34,6 +34,64 @@ namespace Student
             {
                 adj[i] = new int?[4] { null, null, null, null };
             }
+        }
+
+        public override void AddEdge(int v, int w)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (adj[v][i] == w) break;
+                if (adj[v][i] == null) //#*????
+                {
+                    adj[v][i] = w;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (adj[w][i] == v) break;
+                if (adj[w][i] == null)
+                {
+                    adj[w][i] = v;
+                    break;
+                }
+            }
+        }
+
+        public override bool ContainsEdge(int v, int w)
+        {
+            IEnumerator<int> enumerator1 = AdjacentTo(v);
+            while (enumerator1.MoveNext())
+                if (enumerator1.Current == w)
+                    return true;
+            return false;
+        }
+        
+        public override IEnumerator<int> AdjacentTo(int v)
+        {
+            List<int> e = new List<int>();
+            foreach (int? nullable in adj[v])
+                if (nullable != null) e.Add(nullable ?? default(int));
+            return e.GetEnumerator();
+        }
+
+        public void RemoveEdge(int v, int w)
+        {
+            for (int i = 0; i < 4; i++)
+                if (adj[v][i] == w)
+                    adj[v][i] = null;
+
+            for (int i = 0; i < 4; i++)
+                if (adj[w][i] == v)
+                    adj[w][i] = null;
+        }
+
+        public void RemoveAllIncidentEdges(int v)
+        {
+            IEnumerator<int> enumerator = AdjacentTo(v);
+            while (enumerator.MoveNext())
+                RemoveEdge(v, enumerator.Current);
         }
 
         public override void Update(SpelBräde bräde)
@@ -71,65 +129,6 @@ namespace Student
                     }
                 }
             }
-        }
-
-        public override void AddEdge(int v, int w)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                if (adj[v][i] == w) break;
-                if (adj[v][i] == null) //#*????
-                {
-                    adj[v][i] = w;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                if (adj[w][i] == v) break;
-                if (adj[w][i] == null)
-                {
-                    adj[w][i] = v;
-                    break;
-                }
-            }
-        }
-
-
-        public void RemoveEdge(int v, int w)
-        {
-            for (int i = 0; i < 4; i++)
-                if (adj[v][i] == w)
-                    adj[v][i] = null;
-
-            for (int i = 0; i < 4; i++)
-                if (adj[w][i] == v)
-                    adj[w][i] = null;
-        }
-
-        public override bool ContainsEdge(int v, int w)
-        {
-            IEnumerator<int> enumerator1 = AdjacentTo(v);
-            while (enumerator1.MoveNext())
-                if (enumerator1.Current == w)
-                    return true;
-            return false;
-        }
-        
-        public override IEnumerator<int> AdjacentTo(int v)
-        {
-            List<int> e = new List<int>();
-            foreach (int? nullable in adj[v])
-                if (nullable != null) e.Add(nullable ?? default(int));
-            return e.GetEnumerator();
-        }
-
-        public void RemoveAllIncidentEdges(int v)
-        {
-            IEnumerator<int> enumerator = AdjacentTo(v);
-            while (enumerator.MoveNext())
-                RemoveEdge(v, enumerator.Current);
         }
     }
 }

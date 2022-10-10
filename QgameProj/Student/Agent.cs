@@ -31,7 +31,7 @@ class Agent:BaseAgent {
     {
         if(!isInitialized)
         {
-            graph = new GraphImplementation(new GraphData(bräde));
+            graph = new AdjacencyList(new GraphData(bräde));
             controller = new AgentController();
             isInitialized = true;
         }
