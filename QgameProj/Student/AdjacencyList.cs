@@ -16,6 +16,8 @@ namespace Student
         private List<int>[] adjacencyList;
 
         private Node[] nodes; 
+        private int distTo; //~distance
+        
         //private Node[/*9*/,/*9*/] nodes;
 
         public AdjacencyList(int V)
