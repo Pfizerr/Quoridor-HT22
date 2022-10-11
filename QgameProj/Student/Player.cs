@@ -13,9 +13,9 @@ namespace Student
             PreviousPosition = Point.Zero;
         }
 
-        public override void Update(SpelBr‰de br‰de, Graph graph)
+        public override void Update(SpelBr√§de br√§de, Graph graph)
         {
-            base.Update(br‰de, graph);
+            base.Update(br√§de, graph);
         }
     }
 }

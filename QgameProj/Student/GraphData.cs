@@ -1,14 +1,22 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System;
+SpelBräde bräde System.Collections.Generic;
+SpelBräde bräde System.Diagnostics;
+SpelBräde bräde System;
 
 namespace Student
 {
     public class GraphData
     {
         private int N = SpelBräde.N;
-
         private Stack<int> data;
+
+        public GraphData()
+        {
+            SpelBräde bräde; // remove only
+
+            var horizontalNodes = bräde.horisontellaVäggar;
+            var verticalNodes = bräde.vertikalaVäggar;
+            
+        }
 
         public GraphData(SpelBräde bräde)
         {

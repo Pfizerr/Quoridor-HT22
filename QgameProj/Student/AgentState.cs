@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace Student
 {
-    public class AgentState // NOT ABSTRACT, JUST ONE CLASS FOR BOTH, FFS.... #* #* #* #* #* #*
+    public abstract class AgentState
     {
         public Point Position
         {
@@ -35,13 +35,6 @@ namespace Student
             get;
             protected set;
         }
-
-//         public bool LastMoved
-//         {
-//             get;
-//             protected set;
-//         }
-
         public int Identifier
         {
             get;
@@ -68,15 +61,22 @@ namespace Student
             protected set;
         }
 
+        public bool HasMoved
+        [
+            get;
+            protected set;
+        ]
+
         public AgentState()
         {
-            N = SpelBr‰de.N;
+            N = SpelBr√§de.N;
         }
 
-        public virtual void Update(SpelBr‰de br‰de, Graph graph)
+        public virtual void Update(SpelBr√§de br√§de, Graph graph)
         {
             PreviousPosition = Position;
-            Position = br‰de.spelare[Identifier].position;
+            Position = br√§de.spelare[Identifier].position;
+            HasMoved = Position != PreviousPosition;
 
             BreadthFirstSearch bfs = new BreadthFirstSearch(graph, Utility.ToInt(Position));
             bfs.Search(graph, Utility.ToInt(Position));
@@ -91,11 +91,6 @@ namespace Student
             }
 
             PreviousDirection = new Point(Position.X - PreviousPosition.X, Position.Y - PreviousPosition.Y);
-        }
-
-        public bool HasMoved() //??? consistency
-        {
-            return (Position != PreviousPosition);
         }
     }
 }

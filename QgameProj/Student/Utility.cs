@@ -7,7 +7,7 @@ namespace Student
     public class Utility
     {
 
-        public static int N = SpelBr‰de.N;
+        public static int N = SpelBr√§de.N;
         /// <summary>
         /// Conversion from point to one-dimensional index.
         /// </summary>

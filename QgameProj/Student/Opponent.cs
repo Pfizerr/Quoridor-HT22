@@ -15,14 +15,14 @@ namespace Student
             DestinationRow = 0;
         }
 
-        public override void Update(SpelBr‰de br‰de, Graph graph)
+        public override void Update(SpelBr√§de br√§de, Graph graph)
         {
             if (HasMoved() && !firstRoundSkip)
             {
                 Path.Pop();
             }
 
-            base.Update(br‰de, graph);
+            base.Update(br√§de, graph);
         }
     }
 }

@@ -6,13 +6,9 @@ namespace Student
 {
     public class MoveBehaviour : IBehaviour
     {
-        public Drag DoBehaviour(Player player, Opponent opponent, SpelBr‰de board, Graph graph)
+        public Drag DoBehaviour(Player player, Opponent opponent, SpelBr√§de board, Graph graph)
         {
-            Drag drag = new Drag();
-            drag.typ = Typ.Flytta;
-            drag.point = Utility.ToPoint(player.Path.Pop());
 
-            return new Drag();
         }
 
         public void Transition(AgentController controller, IBehaviour behaviour)

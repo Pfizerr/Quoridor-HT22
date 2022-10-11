@@ -11,7 +11,7 @@ namespace Student
         {
         }
 
-        public abstract void Update(SpelBr‰de br‰de);
+        public abstract void Rebuild(SpelBr√§de br√§de);
 
         public abstract void AddEdge(int v, int w);
 

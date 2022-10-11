@@ -100,9 +100,9 @@ namespace Student
                 int current = Peek(i);
                 int diff = current - previous;
 
-                if (diff == SpelBr‰de.N || diff == -SpelBr‰de.N)
+                if (diff == SpelBr√§de.N || diff == -SpelBr√§de.N)
                 {
-                    return diff / SpelBr‰de.N;
+                    return diff / SpelBr√§de.N;
                 }
 
                 previous = current;

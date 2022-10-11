@@ -4,10 +4,19 @@ using System;
 namespace Student
 {
 
+    class Node
+    {
+        List<Node> adjacencyList;
+        Point position; // g√•r att skriva algoritmen utan.
+    }
+
     /// AdjacencyListGraph is an undirected graph with an underlying vertex-indexed array of linked lists (adjacency list) datastructure.
     public class AdjacencyList : Graph
     {
         private List<int>[] adjacencyList;
+
+        private Node[] nodes; 
+        //private Node[/*9*/,/*9*/] nodes;
 
         public AdjacencyList(int V)
         {
@@ -76,16 +85,17 @@ namespace Student
 
         /// <summary>
         /// time-complexity: O() ~
+        /// best achievable complexity: O(N^2).
         /// </summary>
-        public override void Update(SpelBr‰de br‰de)
+        public override void Update(SpelBr√§de br√§de)
         {
-            bool[,] horizontalVertices = br‰de.horisontellaV‰ggar;
-            bool[,] verticalVertices = br‰de.vertikalaV‰ggar;
+            bool[,] horizontalVertices = br√§de.horisontellaV√§ggar;
+            bool[,] verticalVertices = br√§de.vertikalaV√§ggar;
 
-            for (int y = 0; y < N; y++)
-            {
+            for (int y = 0; y < N; y++) 
+            { // O(N)
                 for (int x = 0; x < N; x++)
-                {
+                { // O(N*N)
                     bool h = (y > horizontalVertices.GetLength(1) - 1) ? false : horizontalVertices[x, y];
                     bool v = (x > verticalVertices.GetLength(0) - 1) ? false : verticalVertices[x, y];
                     int center = Utility.ToInt(x, y);

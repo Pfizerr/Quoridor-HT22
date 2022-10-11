@@ -10,26 +10,9 @@ namespace Student
         private int root, previousRoot, firstRoot, currentGrowth, row;
         Typ type;
 
-         public Drag DoBehaviour(Player player, Opponent opponent, SpelBr‰de board, Graph graph)
+         public Drag DoBehaviour(Player player, Opponent opponent, SpelBr√§de board, Graph graph)
          {
-//             Drag drag = new Drag();
-//             Path path = opponent.Path;
-// 
-//             int nextAlongX = path.NextAlongX();
-//             int nextAlongY = path.NextAlongY();
-//             int nextY = opponent.Direction.Y;
-//             int next = path.Peek(0);
-// 
-//             if (nextY != 0 
-//                 && IsBlockable(Utility.ToInt(opponent.Position), next, Typ.Horisontell, graph))
-//                 && IsWithinBounds(next, Typ.Horisontell)
-//             {
-//                 drag.typ = Typ.Horisontell;
-//                 drag.point = next;
-//                 out drag;
-//                 return true;
-//             }
-// 
+
              return new Drag();
          }
 
@@ -42,7 +25,7 @@ namespace Student
                 return false;
             }
 
-            int N = SpelBr‰de.N;
+            int N = SpelBr√§de.N;
             int extension = (type == Typ.Horisontell) ? root + 1 : root + N;
 
             Point r = Utility.ToPoint(root);
@@ -72,7 +55,7 @@ namespace Student
             }
             else if (type == Typ.Vertikal)
             {
-                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v + SpelBr‰de.N, w + SpelBr‰de.N) && IsWithinBounds(w, type))
+                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v + SpelBr√§de.N, w + SpelBr√§de.N) && IsWithinBounds(w, type))
                 {
                     return true;
                 }
@@ -90,8 +73,5 @@ namespace Student
 
             controller.Behaviour = behaviour;
         }
-
-        // are nodes v and w blockable with a wall with given orientation placed between v and w
-
     }
 }
