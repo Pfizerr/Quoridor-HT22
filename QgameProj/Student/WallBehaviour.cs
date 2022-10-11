@@ -10,136 +10,29 @@ namespace Student
         private int root, previousRoot, firstRoot, currentGrowth, row;
         Typ type;
 
-        public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board, Graph graph)
-        {
-            Drag drag = new Drag();
-            Path path = opponent.Path;
+         public Drag DoBehaviour(Player player, Opponent opponent, SpelBräde board, Graph graph)
+         {
+//             Drag drag = new Drag();
+//             Path path = opponent.Path;
+// 
+//             int nextAlongX = path.NextAlongX();
+//             int nextAlongY = path.NextAlongY();
+//             int nextY = opponent.Direction.Y;
+//             int next = path.Peek(0);
+// 
+//             if (nextY != 0 
+//                 && IsBlockable(Utility.ToInt(opponent.Position), next, Typ.Horisontell, graph))
+//                 && IsWithinBounds(next, Typ.Horisontell)
+//             {
+//                 drag.typ = Typ.Horisontell;
+//                 drag.point = next;
+//                 out drag;
+//                 return true;
+//             }
+// 
+             return new Drag();
+         }
 
-            int nextAlongX = path.NextAlongX();
-            int nextAlongY = path.NextAlongY();
-            int nextX = opponent.Direction.X;
-            int nextY = opponent.Direction.Y;
-            int next = path.Peek(0);
-
-            bool result = true; 
-
-            if (!hasStartedBlocking)
-            {
-                hasStartedBlocking = true;
-                row = (next - next % SpelBräde.N) / SpelBräde.N;
-                currentGrowth = nextAlongX;
-
-                if (nextX != 0)
-                {
-                    //TryVertical();
-                    firstRoot = root = next + nextAlongX;
-                    result = TryHorizontal(next + nextAlongX, nextAlongY, opponent, graph, out drag);
-                }
-                else if (nextY != 0)
-                {
-                    firstRoot = root = next + nextAlongX;
-                    result = TryHorizontal(next + nextAlongX, nextAlongY, opponent, graph, out drag);
-                }
-                else System.Diagnostics.Debugger.Break();
-                
-            }
-            else // HasStartedBlocking 
-            {
-                if (currentGrowth == 0)
-                {
-                    currentGrowth = (nextAlongX == 0) ? opponent.PreviousDirection.X : nextAlongX;
-                }
-
-                previousRoot = root;
-                root += currentGrowth;
-
-                if (nextAlongX == -1)
-                {
-                    TryLeft(next, nextAlongY, opponent, graph, out drag);
-                }
-                else if (nextAlongX == 1)
-                {
-                    TryRight(next, nextAlongY, opponent, graph, out drag);
-                }
-                else if (opponent.PreviousDirection.X == -1)
-                {
-                    TryLeft(next, nextAlongY, opponent, graph, out drag);
-                }
-                else if (opponent.PreviousDirection.X == 1)
-                {
-                    TryRight(next, nextAlongY, opponent, graph, out drag);
-                }
-            }
-
-            if (result == false)
-            {
-                System.Diagnostics.Debugger.Break();
-            }
-
-            return drag;
-        }
-
-        public bool TryLeft(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
-        {
-            drag = new Drag();
-            for (int i = root; i > 0; i--)
-            {
-                if (TryHorizontal(i, moveY, opponent, graph, out drag))
-                {
-                    drag.point = Utility.ToPoint(root);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool TryRight(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
-        {
-            drag = new Drag();
-            for (int i = firstRoot; i < SpelBräde.N - 1; i++)
-            {
-                if (TryHorizontal(root + i, moveY, opponent, graph, out drag))
-                {
-                    drag.point = Utility.ToPoint(root);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool TryHorizontal(int root, int moveY, Opponent opponent, Graph graph, out Drag drag)
-        {
-            drag.typ = type = Typ.Horisontell;
-            drag.point = Point.Zero;
-
-            int ext = root + 1;
-            moveY = moveY * SpelBräde.N;
-            int current = root + moveY;
-            bool hasPath = false;
-
-            if (IsWithinBounds(root, Typ.Horisontell) &&
-                graph.ContainsEdge(root, current) &&
-                graph.ContainsEdge(ext, current + 1))
-            {
-                // Connected Components
-                using (BreadthFirstSearch bfs = new BreadthFirstSearch(graph, current))
-                {
-                    bfs.PredictForAlteredGraph(bfs, graph as AdjacencyList, current, opponent.DestinationRow, root, root + 1, out hasPath);
-
-                    // use this path for opponent instead of rebuilding next turn
-                }
-
-                if (hasPath)
-                {
-                    drag.point = Utility.ToPoint(root);
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         public bool IsWithinBounds(int root, Typ type)
         {
@@ -163,17 +56,6 @@ namespace Student
             return false;
         }
 
-        public void Transition(AgentController controller, IBehaviour behaviour)
-        {
-            if (behaviour is WallBehaviour)
-            {
-                return;
-            }
-
-            controller.Behaviour = behaviour;
-        }
-
-        // are nodes v and w blockable with a wall with given orientation placed between v and w
         public bool IsBlockable(int v, int w, Typ type, Graph graph)
         {
             if (type == Typ.Flytta)
@@ -199,10 +81,17 @@ namespace Student
             return false;
         }
 
-        public enum WallOrientation
+        public void Transition(AgentController controller, IBehaviour behaviour)
         {
-            Vertical,
-            Horizontal
+            if (behaviour is WallBehaviour)
+            {
+                return;
+            }
+
+            controller.Behaviour = behaviour;
         }
+
+        // are nodes v and w blockable with a wall with given orientation placed between v and w
+
     }
 }
