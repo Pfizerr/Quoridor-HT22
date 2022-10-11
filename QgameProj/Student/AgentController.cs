@@ -22,20 +22,18 @@ namespace Student
         {
             player.Update(bräde, graph);
             opponent.Update(bräde, graph);
-
-            if (player.Path.Size() > opponent.Path.Size())
-            {
-                Behaviour.Transition(this, new WallBehaviour());
-            }
-            else
-            {
-                Behaviour.Transition(this, new MoveBehaviour());
-            }
         }
 
         public Drag GetPlay(Graph graph, SpelBräde bräde)
         {
-            return Behaviour.DoBehaviour(player, opponent, bräde, graph);
+            if (player.Path.Size() > opponent.Path.Size())
+            {
+                return WallBehaviour();
+            }
+            else
+            {
+                return MoveBehaviour();
+            }
         }
 
 
@@ -44,8 +42,7 @@ namespace Student
             Drag drag = new Drag();
             drag.typ = Typ.Flytta;
             drag.point = Utility.ToPoint(player.Path.Pop());
-
-            return new Drag();
+            return drag;
         }
 
         public Drag WallBehaviour()
@@ -53,8 +50,8 @@ namespace Student
             Path path = opponent.Path;
             Point current = opponent.Position;
             Point next = Utility.ToPoint(path.Peek(0));
-
-
+            
+            
         }
     }
 }

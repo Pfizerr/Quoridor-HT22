@@ -1,6 +1,6 @@
-SpelBräde bräde System.Collections.Generic;
-SpelBräde bräde System.Diagnostics;
-SpelBräde bräde System;
+System.Collections.Generic;
+System.Diagnostics;
+System;
 
 namespace Student
 {

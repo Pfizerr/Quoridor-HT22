@@ -62,10 +62,10 @@ namespace Student
         }
 
         public bool HasMoved
-        [
+        {
             get;
             protected set;
-        ]
+        }
 
         public AgentState()
         {
