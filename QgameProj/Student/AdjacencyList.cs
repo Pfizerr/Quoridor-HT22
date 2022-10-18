@@ -32,45 +32,54 @@ namespace Student
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public void RemoveEdge(int v, int w)
+        public void RemoveEdge(Point v, Point w)
         {
-            adjacencyList[v].Remove(w);
-            adjacencyList[w].Remove(v);
+            int _v = Utility.ToInt(v);
+            int _w = Utility.ToInt(w);
+
+            adjacencyList[_v].Remove(_w);
+            adjacencyList[_w].Remove(_v);
         }
         
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public void RemoveAllIncidentEdges(int v)
+        public void RemoveAllIncidentEdges(Point v)
         {
-            IEnumerator<int> enumerator = AdjacentTo(v);
+            int _v = Utility.ToInt(v);
+
+            IEnumerator<int> enumerator = AdjacentTo(_v);
             while (enumerator.MoveNext())
-                RemoveEdge(v, enumerator.Current);
+                RemoveEdge(_v, enumerator.Current);
         }
 
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public override void AddEdge(int v, int w)
+        public override void AddEdge(Point v, Point w)
         {
-            adjacencyList[v].Add(w);
-            adjacencyList[w].Add(v);
+            int _v = Utility.ToInt(v);
+            int _w = Utility.ToInt(w);
+
+            adjacencyList[_v].Add(_w);
+            adjacencyList[_w].Add(_v);
+        }
+
+        public override bool ContainsEdge(Point v, Point w)
+        {
+            int _v = Utility.ToInt(v);
+            int _w = Utility.ToInt(w);
+
+            return adjacencyList[_v].Contains(_w) ? true : false;
         }
 
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public override bool ContainsEdge(int v, int w)
+        public override IEnumerator<int> AdjacentTo(Point v)
         {
-            return adjacencyList[v].Contains(w) ? true : false;
-        }
-
-        /// <summary>
-        /// time-complexity: O() ~
-        /// </summary>
-        public override IEnumerator<int> AdjacentTo(int v)
-        {
-            return adjacencyList[v].GetEnumerator();
+            int _v = Utility.ToInt(v);
+            return adjacencyList[_v].GetEnumerator();
         }
 
         /// <summary>

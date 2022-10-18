@@ -83,7 +83,7 @@ namespace Student
                 System.Diagnostics.Debugger.Break();
                 return false;
             }
-            else if (typ == Typ.Horisontell)
+            else if (type == Typ.Horisontell)
             {
                 extension = new Point(root.X + 1, root.Y);
 
@@ -109,21 +109,29 @@ namespace Student
             return false;
         }
 
-        public bool IsWithinBounds(int/*point*/ root, Typ type)
+        public bool IsWithinBounds(point root, Typ type)
         {
+            int N = SpelBräde.N;
+            Point extension;
+
             if (type == Typ.Flytta)
             {
                 System.Diagnostics.Debugger.Break();
                 return false;
             }
+            else if (type == Typ.Horisontell)
+            {
+                extension = new Point(root.X + 1, root.Y);
+            }
+            else if (type == Typ.Vertikal)
+            {
+                extension = new Point(root.X, root.Y + 1);
+            }
 
-            int N = SpelBräde.N;
-            int extension = (type == Typ.Horisontell) ? root + 1 : root + N;
-
-            Point r = Utility.ToPoint(root);
-            Point e = Utility.ToPoint(extension);
-
-            if (0 <= r.X && r.X < N && 0 <= r.Y && r.Y < N)
+            if (0 <= root.X && root.X < N &&
+                0 <= root.Y && root.Y < N &&
+                0 <= extension.X && extension.X < N &&
+                0 <= extension.Y && extension.Y < N)
             {
                 return true;
             }
