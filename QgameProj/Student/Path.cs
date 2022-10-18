@@ -32,34 +32,35 @@ namespace Student
             return first == null;
         }
 
-        public int Size()
+        public int Size
         {
-            return size;
+            get;
+            private set;
         }
 
-        public void Push(int item)
+        public void Push(Point item)
         {
             Node old = first;
             first = new Node();
             first.Item = item;
             first.Next = old;
-            size++;
+            Size++;
         }
 
         public Point Pop()
         {
-            int item = first.Item;
+            Point item = first.Item;
             first = first.Next;
-            size--;
+            Size--;
             return item;
         }
 
         public Point Peek(int depth)
         {
-            if (depth > Size())
+            if (depth > Size)
             {
                 System.Diagnostics.Debugger.Break();
-                return 0;
+                return Point.Zero;
             }
 
             Node node = first;

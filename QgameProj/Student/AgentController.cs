@@ -50,7 +50,7 @@ namespace Student
             Point current = opponent.Position;
             Point next = path.Peek(0);
 
-            for(int i = 0; i < path.Count - 1; i++)
+            for(int i = 0; i < path.Size - 1; i++)
             {
                 
             }
