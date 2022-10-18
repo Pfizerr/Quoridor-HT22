@@ -48,11 +48,20 @@ namespace Student
 
 
             Point current = opponent.Position;
-            Point next = path.Peek(0);
 
             for(int i = 0; i < path.Size - 1; i++)
             {
+                Point next = path.Peek(0);
                 
+                drag.point = next;
+                if (next.X - current.X != 0)
+                {
+                    drag.typ = Typ.Vertikal;
+                }
+                else if (next.Y - current.Y != 0)
+                {
+                    drag.typ = Typ.Horisontell;
+                }
             }
             
             return drag;
