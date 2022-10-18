@@ -26,10 +26,10 @@ namespace Student
         }
 
         public abstract void Update(SpelBräde bräde);
-        public abstract void AddEdge(Point v, Point w);
+        public abstract void AddEdge(int v, int w);
+        public abstract bool ContainsEdge(int v, int w);
         public abstract bool ContainsEdge(Point v, Point w);
-        public abstract bool ContainsEdge(Point v, Point w);
-        public abstract IEnumerator<int> AdjacentTo(Point v);
+        public abstract IEnumerator<int> AdjacentTo(int v);
 
         public int V 
         { 

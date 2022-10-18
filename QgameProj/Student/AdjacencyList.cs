@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using System;
 
 namespace Student
@@ -33,54 +32,45 @@ namespace Student
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public void RemoveEdge(Point v, Point w)
+        public void RemoveEdge(int v, int w)
         {
-            int _v = Utility.ToInt(v);
-            int _w = Utility.ToInt(w);
-
-            adjacencyList[_v].Remove(_w);
-            adjacencyList[_w].Remove(_v);
+            adjacencyList[v].Remove(w);
+            adjacencyList[w].Remove(v);
         }
         
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public void RemoveAllIncidentEdges(Point v)
+        public void RemoveAllIncidentEdges(int v)
         {
-            int _v = Utility.ToInt(v);
-
-            IEnumerator<int> enumerator = AdjacentTo(_v);
+            IEnumerator<int> enumerator = AdjacentTo(v);
             while (enumerator.MoveNext())
-                RemoveEdge(_v, enumerator.Current);
+                RemoveEdge(v, enumerator.Current);
         }
 
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public override void AddEdge(Point v, Point w)
+        public override void AddEdge(int v, int w)
         {
-            int _v = Utility.ToInt(v);
-            int _w = Utility.ToInt(w);
-
-            adjacencyList[_v].Add(_w);
-            adjacencyList[_w].Add(_v);
-        }
-
-        public override bool ContainsEdge(Point v, Point w)
-        {
-            int _v = Utility.ToInt(v);
-            int _w = Utility.ToInt(w);
-
-            return adjacencyList[_v].Contains(_w) ? true : false;
+            adjacencyList[v].Add(w);
+            adjacencyList[w].Add(v);
         }
 
         /// <summary>
         /// time-complexity: O() ~
         /// </summary>
-        public override IEnumerator<int> AdjacentTo(Point v)
+        public override bool ContainsEdge(int v, int w)
         {
-            int _v = Utility.ToInt(v);
-            return adjacencyList[_v].GetEnumerator();
+            return adjacencyList[v].Contains(w) ? true : false;
+        }
+
+        /// <summary>
+        /// time-complexity: O() ~
+        /// </summary>
+        public override IEnumerator<int> AdjacentTo(int v)
+        {
+            return adjacencyList[v].GetEnumerator();
         }
 
         /// <summary>
