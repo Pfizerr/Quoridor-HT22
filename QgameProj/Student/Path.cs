@@ -14,7 +14,7 @@ namespace Student
 
         private class Node
         {
-            public int Item
+            public Point Item
             {
                 get;
                 set;
@@ -46,7 +46,7 @@ namespace Student
             size++;
         }
 
-        public int Pop()
+        public Point Pop()
         {
             int item = first.Item;
             first = first.Next;
@@ -54,7 +54,7 @@ namespace Student
             return item;
         }
 
-        public int Peek(int depth)
+        public Point Peek(int depth)
         {
             if (depth > Size())
             {
@@ -73,44 +73,5 @@ namespace Student
 
             return node.Item;
         }
-
-        public int NextAlongX()
-        {
-            int previous = Peek(0);
-            for(int i = 1; i < size; i++)
-            {
-                int current = Peek(i);
-                int diff = current - previous;
-
-                if (diff == 1 || diff == -1)
-                {
-                    return diff;
-                }
-
-                previous = current;
-            }
-
-            return 0;
-        }
-        public int NextAlongY()
-        {
-            int previous = Peek(0);
-            for (int i = 1; i < size; i++)
-            {
-                int current = Peek(i);
-                int diff = current - previous;
-
-                if (diff == SpelBräde.N || diff == -SpelBräde.N)
-                {
-                    return diff / SpelBräde.N;
-                }
-
-                previous = current;
-            }
-
-            return 0;
-        }
     }
-
-
 }

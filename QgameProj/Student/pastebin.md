@@ -57,3 +57,45 @@
             return s;
         }
     }
+
+
+
+
+
+
+        public Point NextAlongX()
+        {
+            int previous = Peek(0);
+            for(int i = 1; i < size; i++)
+            {
+                int current = Peek(i);
+                int diff = current - previous;
+
+                if (diff == 1 || diff == -1)
+                {
+                    return diff;
+                }
+
+                previous = current;
+            }
+
+            return 0;
+        }
+        public Point NextAlongY()
+        {
+            int previous = Peek(0);
+            for (int i = 1; i < size; i++)
+            {
+                int current = Peek(i);
+                int diff = current - previous;
+
+                if (diff == SpelBräde.N || diff == -SpelBräde.N)
+                {
+                    return diff / SpelBräde.N;
+                }
+
+                previous = current;
+            }
+
+            return 0;
+        }

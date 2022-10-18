@@ -82,7 +82,7 @@ namespace Student
             bfs.Search(graph, Utility.ToInt(Position));
             Path = bfs.PathToRow(DestinationRow, N);
 
-            Point next = Utility.ToPoint(Path.Peek(0));
+            Point next = Path.Peek(0);
             Direction = new Point(next.X - Position.X, next.Y - Position.Y);
 
             if (PreviousPosition == Point.Zero)

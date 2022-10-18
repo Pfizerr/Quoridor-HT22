@@ -37,7 +37,7 @@ namespace Student
         {
             Drag drag = new Drag();
             drag.typ = Typ.Flytta;
-            drag.point = Utility.ToPoint(player.Path.Pop());
+            drag.point = player.Path.Pop();
             return drag;
         }
 
@@ -48,7 +48,7 @@ namespace Student
 
 
             Point current = opponent.Position;
-            Point next = Utility.ToPoint(path.Peek(0));
+            Point next = path.Peek(0);
 
             for(int i = 0; i < path.Count - 1; i++)
             {
