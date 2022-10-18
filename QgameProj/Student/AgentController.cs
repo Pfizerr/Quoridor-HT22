@@ -45,8 +45,15 @@ namespace Student
         {
             Drag drag = new Drag();
             Path path = opponent.Path;
+
+
             Point current = opponent.Position;
             Point next = Utility.ToPoint(path.Peek(0));
+
+            for(int i = 0; i < path.Count - 1; i++)
+            {
+                
+            }
             
             return drag;
         }

@@ -21,6 +21,11 @@ namespace Student
             {
                 Path.Pop();
             }
+            else
+            {
+                firstRoundSkip = false;
+            }
+            
 
             base.Update(bräde, graph);
         }
