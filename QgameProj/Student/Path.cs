@@ -10,7 +10,6 @@ namespace Student
     public class Path
     {
         private Node first;
-        private int size;
 
         private class Node
         {

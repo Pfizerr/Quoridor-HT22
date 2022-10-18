@@ -22,7 +22,7 @@ namespace Student
 
         public Drag GetPlay(Graph graph, SpelBräde bräde)
         {
-            if (player.Path.Size() > opponent.Path.Size())
+            if (player.Path.Size > opponent.Path.Size)
             {
                 return WallBehaviour();
             }
