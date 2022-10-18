@@ -86,7 +86,7 @@ namespace Student
 
                 Path tPath = PathTo(t);
 
-                if (tPath.Size() < path.Size())
+                if (tPath.Size < path.Size)
                 {
                     path = tPath;
                 }
