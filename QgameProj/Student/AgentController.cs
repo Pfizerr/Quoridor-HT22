@@ -7,6 +7,7 @@ namespace Student
     {
         private Player player;
         private Opponent opponent;
+        private Graph graph;
 
         public AgentController()
         {
@@ -16,6 +17,7 @@ namespace Student
 
         public void Update(SpelBräde bräde, Graph graph)
         {
+            this.graph = graph;
             player.Update(bräde, graph);
             opponent.Update(bräde, graph);
         }
@@ -62,28 +64,43 @@ namespace Student
                 {
                     drag.typ = Typ.Horisontell;
                 }
+
+                if (IsPlacementValid(next, drag.typ))
+                {
+                    return drag;
+                }
             }
             
             return drag;
         }
 
-        public bool IsBlockable(int v, int w, Typ type, Graph graph)
+        public bool IsPlacementValid(Point root, Typ type)
         {
+            Point extension;
+
             if (type == Typ.Flytta)
             {
                 System.Diagnostics.Debugger.Break();
                 return false;
             }
-            else if (type == Typ.Horisontell)
+            else if (typ == Typ.Horisontell)
             {
-                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v + 1, w + 1) && IsWithinBounds(w, type))
+                extension = new Point(root.X + 1, root.Y);
+
+                if (IsWithinBounds(root, type) &&
+                    graph.ContainsEdge(root, new Point(root.X, root.Y + 1)) &&
+                    graph.ContainsEdge(extension, new Point(extension.X, extension.Y + 1)))
                 {
                     return true;
                 }
             }
             else if (type == Typ.Vertikal)
             {
-                if (graph.ContainsEdge(v, w) && graph.ContainsEdge(v + SpelBräde.N, w + SpelBräde.N) && IsWithinBounds(w, type))
+                extension = new Point(root.X, root.Y + 1);
+
+                if (IsWithinBounds(root, type) &&
+                    graph.ContainsEdge(new Point(root.X + 1, root.Y), root) &&
+                    graph.ContainsEdge(new Point(extension.X + 1, extension.Y), extension))
                 {
                     return true;
                 }
