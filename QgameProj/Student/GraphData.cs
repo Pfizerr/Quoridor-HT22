@@ -1,6 +1,6 @@
-System.Collections.Generic;
-System.Diagnostics;
-System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System;
 
 namespace Student
 {

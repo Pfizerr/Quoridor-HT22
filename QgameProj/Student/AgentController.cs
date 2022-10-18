@@ -1,5 +1,5 @@
 using System;
-using Microsoft.Framework.Xna;
+using Microsoft.Xna.Framework;
 
 namespace Student
 {
@@ -7,12 +7,6 @@ namespace Student
     {
         private Player player;
         private Opponent opponent;
-
-        public IBehaviour Behaviour
-        {
-            get;
-            set;
-        }
 
         public AgentController()
         {
