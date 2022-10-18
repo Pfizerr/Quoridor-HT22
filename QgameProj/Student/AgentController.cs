@@ -12,7 +12,6 @@ namespace Student
         {
             opponent = new Opponent();
             player = new Player();
-            Behaviour = new MoveBehaviour();
         }
 
         public void Update(SpelBräde bräde, Graph graph)
@@ -44,16 +43,15 @@ namespace Student
 
         public Drag WallBehaviour()
         {
+            Drag drag = new Drag();
             Path path = opponent.Path;
             Point current = opponent.Position;
             Point next = Utility.ToPoint(path.Peek(0));
             
-            
-            
+            return drag;
         }
 
-
-        public bool IsBlockable(int v, int w, Type type, Graph graph)
+        public bool IsBlockable(int v, int w, Typ type, Graph graph)
         {
             if (type == Typ.Flytta)
             {
@@ -78,7 +76,7 @@ namespace Student
             return false;
         }
 
-        public bool IsWithinBounds(int/*point*/ root, Type type)
+        public bool IsWithinBounds(int/*point*/ root, Typ type)
         {
             if (type == Typ.Flytta)
             {
