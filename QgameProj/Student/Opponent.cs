@@ -17,7 +17,7 @@ namespace Student
 
         public override void Update(SpelBräde bräde, Graph graph)
         {
-            if (HasMoved() && !firstRoundSkip)
+            if (HasMoved && !firstRoundSkip)
             {
                 Path.Pop();
             }
