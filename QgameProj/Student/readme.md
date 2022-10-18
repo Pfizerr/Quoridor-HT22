@@ -16,3 +16,13 @@ adjacencylist
         private int distTo; //~distance
         
         //private Node[/*9*/,/*9*/] nodes;
+
+
+
+
+WallBehaviour.cs:
+
+        private bool hasStartedBlocking; //isBlocking
+        private int root, previousRoot, firstRoot, currentGrowth, row;
+        Typ type;
+
