@@ -9,15 +9,6 @@ namespace Student
         private int N = SpelBräde.N;
         private Stack<int> data;
 
-        public GraphData()
-        {
-            SpelBräde bräde; // remove only
-
-            var horizontalNodes = bräde.horisontellaVäggar;
-            var verticalNodes = bräde.vertikalaVäggar;
-            
-        }
-
         public GraphData(SpelBräde bräde)
         {
             var hNodes = bräde.horisontellaVäggar;
