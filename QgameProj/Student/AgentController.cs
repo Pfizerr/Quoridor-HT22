@@ -1,3 +1,6 @@
+using System;
+using Microsoft.Framework.Xna;
+
 namespace Student
 {
     public class AgentController
@@ -50,6 +53,7 @@ namespace Student
             Path path = opponent.Path;
             Point current = opponent.Position;
             Point next = Utility.ToPoint(path.Peek(0));
+            
             
             
         }

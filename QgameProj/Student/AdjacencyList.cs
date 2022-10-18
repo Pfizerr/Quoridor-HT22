@@ -3,22 +3,10 @@ using System;
 
 namespace Student
 {
-
-    class Node
-    {
-        List<Node> adjacencyList;
-        Point position; // går att skriva algoritmen utan.
-    }
-
-    /// AdjacencyListGraph is an undirected graph with an underlying vertex-indexed array of linked lists (adjacency list) datastructure.
+    
     public class AdjacencyList : Graph
     {
         private List<int>[] adjacencyList;
-
-        private Node[] nodes; 
-        private int distTo; //~distance
-        
-        //private Node[/*9*/,/*9*/] nodes;
 
         public AdjacencyList(int V)
         {

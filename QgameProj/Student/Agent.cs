@@ -43,29 +43,4 @@ class Agent:BaseAgent {
         System.Diagnostics.Debugger.Break();
         return SökNästaDrag(bräde);
     }
-
-    public class Node
-    {
-        public Node()
-        {
-
-        }
-
-        public List<Node> AdjacencyList
-        {
-            get;
-            set;
-        }
-
-        public int Distance
-        {
-            get;
-            set;
-        }
-    }
-
-    public class Graph
-    {
-
-    }
 }
