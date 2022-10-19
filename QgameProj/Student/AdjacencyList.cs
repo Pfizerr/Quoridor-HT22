@@ -7,12 +7,15 @@ namespace Student
     
     public class AdjacencyList : Graph
     {
-        private List<int>[] adjacencyList; // Space: O(E+V) // E + V
+        private List<int>[] adjacencyList; // Space: E+V
 
+        // ~ 2N^2, O(N^2)
         public AdjacencyList(SpelBräde bräde) : base(SpelBräde.N)
         {
-            Build(bräde);
+            adjacencyList = new List<int>[V]; // O(N^2)
+            Build(bräde); // O(N^2)
         }
+        
 
         // O(N^2)
         public override void Build(SpelBräde bräde)
@@ -26,6 +29,11 @@ namespace Student
                 for (int x = 0; x < N; x++)
                 {
                     int center = y * N + x;
+
+                    if (adjacencyList[center] == null)
+                    {
+                        adjacencyList[center] = new List<int>();
+                    }
 
                     if (horizontalWalls[x, y])
                     {
