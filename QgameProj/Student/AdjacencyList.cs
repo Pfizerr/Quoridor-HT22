@@ -12,7 +12,16 @@ namespace Student
         // ~ 2N^2, O(N^2)
         public AdjacencyList(SpelBräde bräde) : base(SpelBräde.N)
         {
-            adjacencyList = new List<int>[V]; // O(N^2)
+            // < O(N^2)
+            adjacencyList = new List<int>[V]; 
+            
+            for (int i = 0; i < V; i++)
+            {
+                adjacencyList[i] = new List<int>();
+            }
+            // > O(N^2)
+
+
             Build(bräde); // O(N^2)
         }
         
@@ -29,11 +38,6 @@ namespace Student
                 for (int x = 0; x < N; x++)
                 {
                     int center = y * N + x;
-
-                    if (adjacencyList[center] == null)
-                    {
-                        adjacencyList[center] = new List<int>();
-                    }
 
                     if (horizontalWalls[x, y])
                     {
