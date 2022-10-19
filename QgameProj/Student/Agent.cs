@@ -26,15 +26,13 @@ class Agent:BaseAgent {
     {
         if(!isInitialized)
         {
-            graph = new AdjacencyList(new GraphData(bräde));
+            graph = new AdjacencyList(bräde);
             controller = new AgentController();
             isInitialized = true;
         }
 
-
-        graph.Update(bräde);
+        graph.Build(bräde); // O(N^2)
         controller.Update(bräde, graph);
-
         return controller.GetPlay(graph, bräde);
     }
 
