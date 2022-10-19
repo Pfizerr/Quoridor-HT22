@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+using Microsoft.Xna.Framework;
 
 namespace Student
 {
@@ -11,8 +12,8 @@ namespace Student
 
         public GraphData(SpelBräde bräde)
         {
-            var hNodes = bräde.horisontellaVäggar;
             data = new Stack<int>();
+            var hNodes = bräde.horisontellaVäggar;
             var vNodes = bräde.vertikalaVäggar;
             int V = N * N;
             int E = 0;
@@ -58,6 +59,31 @@ namespace Student
 
             data.Push(E);
             data.Push(V);
+        }
+
+        private Stack<Point> _data;
+
+        public void _GraphData(SpelBräde bräde)
+        {
+            data = new Stack<int>();
+            var horizontalWalls = bräde.horisontellaVäggar;
+            var verticalWalls = bräde.vertikalaVäggar;
+            int V = N * N;
+            int E = 0;
+            for (int y = 0; y < N; y++)
+            {
+                for (int x = 0; x < N; x++)
+                {
+                    Point current = new Point(x, y);
+
+                    if (x < horizontalWalls.GetLength(1))
+                    {
+                        
+                    }
+                }
+            }
+
+
         }
 
         public int Next

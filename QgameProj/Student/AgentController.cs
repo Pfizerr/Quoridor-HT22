@@ -76,7 +76,9 @@ namespace Student
 
         public bool IsPlacementValid(Point root, Typ type)
         {
-            Point extension;
+            int _root = Utility.ToInt(root);
+            int _extension = 0;
+            int N = SpelBräde.N;
 
             if (type == Typ.Flytta)
             {
@@ -85,22 +87,22 @@ namespace Student
             }
             else if (type == Typ.Horisontell)
             {
-                extension = new Point(root.X + 1, root.Y);
+               _extension = _root + 1;
 
                 if (IsWithinBounds(root, type) &&
-                    graph.ContainsEdge(root, new Point(root.X, root.Y + 1)) &&
-                    graph.ContainsEdge(extension, new Point(extension.X, extension.Y + 1)))
+                    graph.ContainsEdge(_root, _root + N) &&
+                    graph.ContainsEdge(_extension, _extension + N))
                 {
                     return true;
                 }
             }
             else if (type == Typ.Vertikal)
             {
-                extension = new Point(root.X, root.Y + 1);
+                _extension = _root + N;
 
                 if (IsWithinBounds(root, type) &&
-                    graph.ContainsEdge(new Point(root.X + 1, root.Y), root) &&
-                    graph.ContainsEdge(new Point(extension.X + 1, extension.Y), extension))
+                    graph.ContainsEdge(_root + 1, _root) &&
+                    graph.ContainsEdge(_extension + 1, _extension))
                 {
                     return true;
                 }
@@ -109,10 +111,10 @@ namespace Student
             return false;
         }
 
-        public bool IsWithinBounds(point root, Typ type)
+        public bool IsWithinBounds(Point root, Typ type)
         {
             int N = SpelBräde.N;
-            Point extension;
+            Point extension = Point.Zero;
 
             if (type == Typ.Flytta)
             {
