@@ -8,10 +8,12 @@ namespace Student
     public class AdjacencyList : Graph
     {
         private List<int>[] adjacencyList; // Space: E+V
+        private bool init;
 
         // ~ 2N^2, O(N^2)
         public AdjacencyList(SpelBräde bräde) : base(SpelBräde.N)
         {
+            init = true;
             // < O(N^2)
             adjacencyList = new List<int>[V]; 
             
@@ -32,7 +34,7 @@ namespace Student
             bool[,] horizontalWalls = bräde.horisontellaVäggar; // Kan bara fylla 8 utav 9 platser på en rad/kolumn med väggar. (?)
             bool[,] verticalWalls = bräde.vertikalaVäggar;
             int N = SpelBräde.N;
-
+            
             for (int y = 0; y < N; y++)
             {
                 for (int x = 0; x < N; x++)
@@ -41,27 +43,29 @@ namespace Student
 
                     if (y < horizontalWalls.GetLength(1) - 1 && horizontalWalls[x, y])
                     {
-                        if (ContainsEdge(center, center + 1))
-                            RemoveEdge(center, center + 1);
-                    }
-                    else
-                    {
-                        if ((center + 1) % N != 0 && !ContainsEdge(center, center + 1))
-                            AddEdge(center, center + 1);
-                    }
-
-                    if (x < verticalWalls.GetLength(0) - 1 && verticalWalls[x, y])
-                    {
                         if (ContainsEdge(center, center + N))
                             RemoveEdge(center, center + N);
                     }
                     else
                     {
-                        if ((center + N < N * N) && !ContainsEdge(center, center + N))
+                        if ((center + 1) % N != 0 && init)
+                            AddEdge(center, center + 1);
+                    }
+
+                    if (x < verticalWalls.GetLength(0) - 1 && verticalWalls[x, y])
+                    {
+                        if (ContainsEdge(center, center + 1))
+                            RemoveEdge(center, center + 1);
+                    }
+                    else
+                    {
+                        if ((center + N < N * N) && init)
                             AddEdge(center, center + N);
                     }
                 }
             }
+
+            init = false;
         }
 
         // O(1)

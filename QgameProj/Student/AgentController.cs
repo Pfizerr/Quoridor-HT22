@@ -54,24 +54,32 @@ namespace Student
             for(int i = 0; i < path.Size - 1; i++)
             {
                 Point next = path.Peek(0);
-                
                 drag.point = next;
+                Point k = new Point();
                 if (next.X - current.X != 0)
                 {
                     drag.typ = Typ.Vertikal;
+                    k = new Point(0, 1);
                 }
                 else if (next.Y - current.Y != 0)
                 {
                     drag.typ = Typ.Horisontell;
+                    k = new Point(1, 0);
                 }
 
                 if (IsPlacementValid(next, drag.typ))
                 {
                     return drag;
                 }
+                else if (IsPlacementValid(next - k, drag.typ))
+                {
+                    drag.point = next - k;
+                    return drag;
+                }
             }
-            
-            return drag;
+
+            //return drag;
+            return MoveBehaviour();
         }
 
         public bool IsPlacementValid(Point root, Typ type)
@@ -90,6 +98,7 @@ namespace Student
                _extension = _root + 1;
 
                 if (IsWithinBounds(root, type) &&
+                    IsWithinBounds(new Point(root.X + 1, root.Y), type) &&
                     graph.ContainsEdge(_root, _root + N) &&
                     graph.ContainsEdge(_extension, _extension + N))
                 {
