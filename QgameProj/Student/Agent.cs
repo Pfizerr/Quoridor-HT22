@@ -33,7 +33,7 @@ class Agent:BaseAgent {
 
         graph.Build(bräde); // O(N^2)
         controller.Update(bräde, graph);
-        return controller.GetPlay(graph, bräde);
+        return controller.GetPlay();
     }
 
     public override Drag GörOmDrag(SpelBräde bräde, Drag drag) 

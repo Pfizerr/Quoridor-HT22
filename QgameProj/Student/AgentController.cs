@@ -22,46 +22,50 @@ namespace Student
             opponent.Update(bräde, graph);
         }
 
-        public Drag GetPlay(Graph graph, SpelBräde bräde)
+        public Drag GetPlay()
         {
             if (player.Path.Size > opponent.Path.Size)
             {
-                return WallBehaviour();
+                return WallBehaviour(); // 
             }
             else
             {
-                return MoveBehaviour();
+                return MoveBehaviour(); // O(1)
             }
         }
 
 
         public Drag MoveBehaviour()
         {
-            Drag drag = new Drag();
-            drag.typ = Typ.Flytta;
-            drag.point = player.Path.Pop();
-            return drag;
+            Drag drag = new Drag();           // O(1)
+            drag.typ = Typ.Flytta;            // O(1)
+            drag.point = player.Path.Pop();   // O(1)
+            return drag;                      // O(1)
         }
 
         public Drag WallBehaviour()
         {
-            Drag drag = new Drag();
-            Path path = opponent.Path;
+            Drag drag = new Drag();           // O(1)
+            Path path = opponent.Path;        // O(1)
+            Point current = opponent.Position;// O(1)
 
-
-            Point current = opponent.Position;
-
-            for(int i = 0; i < path.Size - 1; i++)
+            for(int i = 0; i < path.Size - 1; i++)  // # longest possible path size? 10 + 10 walls placed in order for longest path
             {
-                Point next = path.Peek(0);
-                drag.point = next;
-                Point k = new Point();
-                if (next.X - current.X != 0)
+                Point next = path.Peek(0);    // O(1)
+                drag.point = next;            // O(1)
+                Point k = new Point();        // O(1)
+
+                if (next.X - current.X != 0) // O(1)
                 {
                     drag.typ = Typ.Vertikal;
                     k = new Point(0, 1);
+
+                    if (next.X - current.X == 1)
+                    {
+                        drag.point = new Point(next.X - 1, next.Y);
+                    }
                 }
-                else if (next.Y - current.Y != 0)
+                else if (next.Y - current.Y != 0) // O(1)
                 {
                     drag.typ = Typ.Horisontell;
                     k = new Point(1, 0);
@@ -78,7 +82,6 @@ namespace Student
                 }
             }
 
-            //return drag;
             return MoveBehaviour();
         }
 
@@ -87,6 +90,10 @@ namespace Student
             int _root = Utility.ToInt(root);
             int _extension = 0;
             int N = SpelBräde.N;
+
+            bool hasPath = false;
+            int start = Utility.ToInt(opponent.Position);
+            int end = 0;
 
             if (type == Typ.Flytta)
             {
@@ -102,7 +109,12 @@ namespace Student
                     graph.ContainsEdge(_root, _root + N) &&
                     graph.ContainsEdge(_extension, _extension + N))
                 {
-                    return true;
+                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
+
+                    if (hasPath)
+                    {
+                        return true;
+                    }
                 }
             }
             else if (type == Typ.Vertikal)
@@ -113,7 +125,12 @@ namespace Student
                     graph.ContainsEdge(_root + 1, _root) &&
                     graph.ContainsEdge(_extension + 1, _extension))
                 {
-                    return true;
+                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
+
+                    if (hasPath)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -149,24 +166,15 @@ namespace Student
 
             return false;
         }
+
+        public Path PredictForAlteredGraph(BreadthFirstSearch instance, AdjacencyList graph, int start, int end, int root, int ext, out bool hasPath)
+        {
+            graph.RemoveEdge(root, ext);
+            instance.Search(graph, start);
+            hasPath = instance.HasPathTo(end);
+            Path path = instance.PathTo(end);
+            graph.AddEdge(root, ext);
+            return path;
+        }
     }
 }
-
-
-
-/*
-
-
-
-WallBehaviour --
-
-Solution #1:
-Traverse opponents shortest path and, when first possible, block path with wall tangential to path direction.
-
-Solution #2:
-Do until opponent is farther from path than player: start placing walls on a row infront of opponent.
-
-
-
-
-*/

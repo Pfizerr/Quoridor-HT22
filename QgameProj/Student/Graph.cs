@@ -19,20 +19,6 @@ namespace Student
         public abstract bool ContainsEdge(int v, int w);
         public abstract IEnumerator<int> AdjacentTo(int v);
 
-        public new string ToString()
-        {
-            String s = V + " vertices, " + E + " edges\n";
-            for (int v = 0; v < V; v++)
-            {
-                s += v + ": ";
-                IEnumerator<int> enumerator = AdjacentTo(v);
-                while (enumerator.MoveNext())
-                    s += enumerator.Current + " ";
-                s += "\n";
-            }
-            return s;
-        }
-
         public int V 
         { 
             get; 
@@ -45,7 +31,7 @@ namespace Student
             protected set; 
         }
 
-        public int N
+        public int N 
         {
             get;
             protected set;
