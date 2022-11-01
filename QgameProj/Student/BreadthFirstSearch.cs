@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Student
 {
-    public class BreadthFirstSearch : PathAlgorithm
+    public class BreadthFirstSearch
     {
         private Graph graph;
         private bool[] marked;
@@ -18,7 +18,7 @@ namespace Student
             edgeTo = new int[graph.V];
         }
 
-        public override void Search(Graph graph, int start)
+        public void Search(Graph graph, int start)
         {
             Queue<int> queue = new Queue<int>();
             marked[start] = true;
@@ -40,13 +40,13 @@ namespace Student
             }
         }
 
-        public override bool HasPathTo(int end)
+        public bool HasPathTo(int end)
         {
 
             return marked[end];
         }
 
-        public override Path PathTo(int end)
+        public Path PathTo(int end)
         {
             if (!HasPathTo(end))
             {
@@ -65,7 +65,7 @@ namespace Student
         }
 
         // Perhaps add as an extension method (not actually part of the 'typical' BFS-algorithm).
-        public override Path PathToRow(int row, int N)
+        public Path PathToRow(int row, int N)
         {
             Path path = new Path();
             int first = row * N;
