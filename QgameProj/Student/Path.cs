@@ -64,12 +64,10 @@ namespace Student
 
             Node node = first;
 
-            #region Complexity
             for (int i = 0; i < depth; i++)
             {
                 node = node.Next;
             }
-            #endregion
 
             return node.Item;
         }
