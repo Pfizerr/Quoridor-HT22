@@ -7,28 +7,24 @@ namespace Student
 
     public class AdjacencyList : Graph
     {
-        private List<int>[] adjacencyList; // Space: E+V
+        private List<int>[] adjacencyList;
         private bool init;
-
-        // ~ 2N^2, O(N^2)
+        
         public AdjacencyList(SpelBräde bräde) : base(SpelBräde.N)
         {
             init = true;
-            // < O(N^2)
             adjacencyList = new List<int>[V]; 
             
             for (int i = 0; i < V; i++)
             {
                 adjacencyList[i] = new List<int>();
             }
-            // > O(N^2)
 
 
-            Build(bräde); // O(N^2)
+            Build(bräde); 
         }
         
-
-        // O(N^2)
+        
         public override void Build(SpelBräde bräde)
         {
             bool[,] horizontalWalls = bräde.horisontellaVäggar;
@@ -67,8 +63,8 @@ namespace Student
 
             init = false;
         }
+        
 
-        // O(1)
         public void RemoveEdge(int v, int w)
         {
             E--;
@@ -77,17 +73,7 @@ namespace Student
 
         }
 
-        // deg(v)
-        public void RemoveAllIncidentEdges(int v)
-        {
-            IEnumerator<int> enumerator = AdjacentTo(v);
-            while (enumerator.MoveNext())
-                RemoveEdge(v, enumerator.Current);
-
-        }
-
-
-        // O(1)
+        
         public override void AddEdge(int v, int w)
         {
             E++;
@@ -95,15 +81,13 @@ namespace Student
             adjacencyList[w].Add(v);
         }
 
-
-        // O(1)
+        
         public override bool ContainsEdge(int v, int w)
         {
             return adjacencyList[v].Contains(w) ? true : false;
         }
 
-
-        // O(1), enumeration is deg(v)
+        
         public override IEnumerator<int> AdjacentTo(int v)
         {
             return adjacencyList[v].GetEnumerator();
