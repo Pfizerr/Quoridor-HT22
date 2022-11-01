@@ -23,18 +23,7 @@ namespace Student
             get;
             protected set;
         }
-
-        public Typ PreviousPlayType
-        {
-            get;
-            protected set;
-        }
-
-        public int PreviousPlayTypeStreak
-        {
-            get;
-            protected set;
-        }
+        
         public int Identifier
         {
             get;

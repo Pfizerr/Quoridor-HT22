@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework;
 
 namespace Student
 {
-    // space is always proportional to the size of the collection.
-    // the time per operation is always independent of the size of the collection.
-
     public class Path
     {
         private Node first;

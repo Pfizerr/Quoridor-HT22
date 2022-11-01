@@ -31,7 +31,7 @@ class Agent:BaseAgent {
             isInitialized = true;
         }
 
-        graph.Build(bräde); // O(N^2)
+        graph.Build(bräde);
         controller.Update(bräde, graph);
         return controller.GetPlay();
     }

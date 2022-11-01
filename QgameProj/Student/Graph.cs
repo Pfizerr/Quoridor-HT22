@@ -30,11 +30,5 @@ namespace Student
             get; 
             protected set; 
         }
-
-        public int N 
-        {
-            get;
-            protected set;
-        }
     }
 }

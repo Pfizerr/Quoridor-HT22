@@ -57,20 +57,18 @@ namespace Student
 
             for (int x = end; x != start; x = edgeTo[x])
             {
-                // previously: just Push(x), does Utility.ToPoint addition imapct time complexity?
                 path.Push(Utility.ToPoint(x));
             }
 
             return path;
         }
-
-        // Perhaps add as an extension method (not actually part of the 'typical' BFS-algorithm).
+        
         public Path PathToRow(int row, int N)
         {
             Path path = new Path();
             int first = row * N;
 
-            if (HasPathTo(first)) //#* needed ? incorporate into loop ?
+            if (HasPathTo(first)) 
             {
                 path = PathTo(first);
             }
