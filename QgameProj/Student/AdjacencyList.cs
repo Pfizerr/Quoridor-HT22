@@ -20,48 +20,27 @@ namespace Student
                 adjacencyList[i] = new List<int>();
             }
 
-
             Build(bräde); 
         }
         
         
         public override void Build(SpelBräde bräde)
         {
-            bool[,] horizontalWalls = bräde.horisontellaVäggar;
-            bool[,] verticalWalls = bräde.vertikalaVäggar;
-            int N = SpelBräde.N;
+            int N = 0;
+
+            bool[,] horizontalWalls = bräde.horisontellaVäggar; // O(N^2)
+            bool[,] verticalWalls = bräde.vertikalaVäggar; // O(N^2)
+            // O(1): int N = SpelBräde.N;
             
             for (int y = 0; y < N; y++)
             {
                 for (int x = 0; x < N; x++)
                 {
-                    int center = y * N + x;
-
-                    if (y < horizontalWalls.GetLength(1) - 1 && horizontalWalls[x, y])
-                    {
-                        if (ContainsEdge(center, center + N))
-                            RemoveEdge(center, center + N);
-                    }
-                    else
-                    {
-                        if ((center + 1) % N != 0 && init)
-                            AddEdge(center, center + 1);
-                    }
-
-                    if (x < verticalWalls.GetLength(0) - 1 && verticalWalls[x, y])
-                    {
-                        if (ContainsEdge(center, center + 1))
-                            RemoveEdge(center, center + 1);
-                    }
-                    else
-                    {
-                        if ((center + N < N * N) && init)
-                            AddEdge(center, center + N);
-                    }
+                    // O(1)
                 }
             }
 
-            init = false;
+            // O(1): init = false;
         }
         
 
