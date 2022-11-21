@@ -7,6 +7,17 @@ namespace Student
     public abstract class AgentState
     {
 
+        public Path Path
+        {
+            get;
+            set;
+        }
+
+        public Point Position
+        {
+            get;
+            set;
+        }
 
         public virtual void Update(SpelBräde bräde, Graph graph)
         {

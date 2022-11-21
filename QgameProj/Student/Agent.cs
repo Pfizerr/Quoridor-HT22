@@ -84,9 +84,9 @@ class Agent:BaseAgent {
     }
 
 
-    public override Drag SökNästaDrag(SpelBräde bräde) 
+    public override Drag SökNästaDrag(SpelBräde bräde)
     {
-        if (!isInitialized) 
+        if (!isInitialized)
         {
             graph = new AdjacencyList(bräde); // ~5N^2, O(N^2)
 
@@ -99,7 +99,7 @@ class Agent:BaseAgent {
         } // O(N^2)
 
         graph.Build(bräde); // O(N^2)
-        
+
 
         controller.Update(bräde, graph);
         /*  this.graph = graph;
@@ -114,8 +114,9 @@ class Agent:BaseAgent {
             else
             {
                 return MoveBehaviour();
-            }  */
-
+            }
+    }  
+        */
 
         /// WALLBEHAVIOUR
         /// *
@@ -160,10 +161,7 @@ class Agent:BaseAgent {
 
         /// MOVEBEHAVIOUR
         /// *
-        /*  Drag drag = new Drag();           
-            drag.typ = Typ.Flytta;            
-            drag.point = player.Path.Pop();   
-            return drag;  */
+
     }
 
     public override Drag GörOmDrag(SpelBräde bräde, Drag drag) 

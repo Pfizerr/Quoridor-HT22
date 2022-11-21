@@ -27,62 +27,57 @@ namespace Student
             if (player.Path.Size > opponent.Path.Size)
             {
                 return WallBehaviour();
+                #region
+                //          [.. O(1) ..]
+                //   
+                // O(1):    for (int i = 0; i < path.Size - 1; i++)
+                //          {
+                //              [.. O(1) ..]
+                //
+                // O(1):        if (next.X - current.X != 0)
+                //              {
+                // O(1):            [.. O(1) ..]
+                //              }
+                // O(1):        else if (next.Y - current.Y != 0)
+                //              {
+                // O(1):            [.. O(1) ..]
+                //              }
+                // O(1):    
+                // O(1):        if (IsPlacementValid(next, drag.typ))
+                //              {
+                // O(1):            return drag;
+                //              }
+                // O(1):        else if (IsPlacementValid(next - k, drag.typ))
+                //              {
+                // O(1):            drag.point = next - k;
+                // O(1):            return drag;
+                //              }
+                //          }
+                //    
+                // O(1):    return MoveBehaviour();
+                #endregion
             }
             else
             {
                 return MoveBehaviour();
+                #region O(1)
+                // O(1):   Drag drag = new Drag();
+                // O(1):   drag.typ = Typ.Flytta;
+                // O(1):   drag.point = player.Path.Pop();
+                // O(1):   return drag;
+                #endregion
             }
         }
 
 
         public Drag MoveBehaviour()
         {
-            Drag drag = new Drag();           
-            drag.typ = Typ.Flytta;            
-            drag.point = player.Path.Pop();   
-            return drag;                      
+                             
         }
 
         public Drag WallBehaviour()
         {
-            Drag drag = new Drag();           
-            Path path = opponent.Path;        
-            Point current = opponent.Position;
-
-            for(int i = 0; i < path.Size - 1; i++) 
-            {
-                Point next = path.Peek(0);    
-                drag.point = next;            
-                Point k = new Point();        
-
-                if (next.X - current.X != 0) 
-                {
-                    drag.typ = Typ.Vertikal;
-                    k = new Point(0, 1);
-
-                    if (next.X - current.X == 1)
-                    {
-                        drag.point = new Point(next.X - 1, next.Y);
-                    }
-                }
-                else if (next.Y - current.Y != 0)
-                {
-                    drag.typ = Typ.Horisontell;
-                    k = new Point(1, 0);
-                }
-
-                if (IsPlacementValid(next, drag.typ))
-                {
-                    return drag;
-                }
-                else if (IsPlacementValid(next - k, drag.typ))
-                {
-                    drag.point = next - k;
-                    return drag;
-                }
-            }
-
-            return MoveBehaviour();
+            
         }
 
         public bool IsPlacementValid(Point root, Typ type)
