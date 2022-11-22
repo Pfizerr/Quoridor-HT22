@@ -40,12 +40,6 @@ namespace Student
             }
         }
 
-        public bool HasPathTo(int end)
-        {
-
-            return marked[end];
-        }
-
         public Path PathTo(int end)
         {
             if (!HasPathTo(end))
@@ -93,5 +87,7 @@ namespace Student
 
             return path;
         }
+
+        public bool HasPathTo(int end) => marked[end];
     }
 }
