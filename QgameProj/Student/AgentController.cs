@@ -85,75 +85,22 @@ namespace Student
 
         public bool IsPlacementValid(Point root, Typ type)
         {
-            // O(1):    int _root = Utility.ToInt(root);
-            // O(1):    int _extension = 0;
-            // O(1):    int N = SpelBräde.N;
-            //
-            // O(1):    bool hasPath = false;
-            // O(1):    int start = Utility.ToInt(opponent.Position);
-            // O(1):    int end = 0;
+            if (type == Typ.Horisontell)
+            {
+                if (IsWithinBounds(root, type) &&
+                    IsWithinBounds(new Point(root.X + 1, root.Y), type) &&
+                    graph.ContainsEdge(_root, _root + N) &&
+                    graph.ContainsEdge(_extension, _extension + N))
+                {
+                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
+                }
+            }
 
-            // O(1):    if (type == Typ.Flytta)
-            //          {
-            // DEBUG CONF.  System.Diagnostics.Debugger.Break();
-            // DEBUG CONF.  return false;
-            //          }
-            // O(1):    else if (type == Typ.Horisontell)
-            //          {
-            // O(1):        _extension = _root + 1;
-
-            // O(1):        if (IsWithinBounds(root, type) &&
-            // O(1):            IsWithinBounds(new Point(root.X + 1, root.Y), type) &&
-            // O(1):            graph.ContainsEdge(_root, _root + N) &&
-            // O(1):            graph.ContainsEdge(_extension, _extension + N))
-            //              {
-            // O(X):            PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
-            // O(1):        
-            // O(1):            if (hasPath)
-            //                  {
-            // O(1):                return true;
-            //                  }
-            //              }
-            //          }
-            // O(1):        else if (type == Typ.Vertikal)
-            //              {
-            // O(1):            _extension = _root + N;
-            // O(1):        
-            // O(X):            if (IsWithinBounds(root, type) &&
-            // O(X):                graph.ContainsEdge(_root + 1, _root) &&
-            // O(X):                graph.ContainsEdge(_extension + 1, _extension))
-            //                  {
-            // O(X):                PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
-            // O(1):        
-            // O(1):                if (hasPath)
-            //                      {
-            // O(1):                    return true;
-            //                     }
-            //                  }
-            //              }
-            //              
-               return false;
+            return false;
         }
 
         public bool IsWithinBounds(Point root, Typ type)
         {
-        // O(1):        int N = SpelBräde.N;
-        // O(1):        Point extension = Point.Zero;
-
-        // O(1):        if (type == Typ.Flytta)
-        //              {
-        // DEBUG CONF.      System.Diagnostics.Debugger.Break();
-        // DEBUG CONF.      return false;
-        //              }
-        // O(1):        else if (type == Typ.Horisontell)
-        //              {
-        // O(1):            extension = new Point(root.X + 1, root.Y);
-        //              }
-        // O(1):        else if (type == Typ.Vertikal)
-        //              {
-        // O(1):            extension = new Point(root.X, root.Y + 1);
-        //              }
-        //
         /// 8-vägsjämförelse?
         //
         // O(X):    if (0 <= root.X && root.X < N &&
@@ -201,3 +148,47 @@ namespace Student
         }
     }
 }
+
+/*
+        public Drag WallBehaviour()
+        {
+            Drag drag = new Drag();           
+            Path path = opponent.Path;        
+            Point current = opponent.Position;
+
+            for(int i = 0; i < path.Size - 1; i++) 
+            {
+                Point next = path.Peek(0);    
+                drag.point = next;            
+                Point k = new Point();        
+
+                if (next.X - current.X != 0) 
+                {
+                    drag.typ = Typ.Vertikal;
+                    k = new Point(0, 1);
+
+                    if (next.X - current.X == 1)
+                    {
+                        drag.point = new Point(next.X - 1, next.Y);
+                    }
+                }
+                else if (next.Y - current.Y != 0)
+                {
+                    drag.typ = Typ.Horisontell;
+                    k = new Point(1, 0);
+                }
+
+                if (IsPlacementValid(next, drag.typ))
+                {
+                    return drag;
+                }
+                else if (IsPlacementValid(next - k, drag.typ))
+                {
+                    drag.point = next - k;
+                    return drag;
+                }
+            }
+
+            return MoveBehaviour();
+        }
+*/
