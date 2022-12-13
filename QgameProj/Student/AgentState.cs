@@ -67,7 +67,8 @@ namespace Student
             Position = bräde.spelare[Identifier].position;
             HasMoved = Position != PreviousPosition;
 
-            BreadthFirstSearch bfs = new BreadthFirstSearch(graph, Utility.ToInt(Position));
+            BreadthFirstSearch bfs = new BreadthFirstSearch(graph,
+                Utility.ToInt(Position));
             bfs.Search(graph, Utility.ToInt(Position));
             Path = bfs.PathToRow(DestinationRow, N);
 
@@ -79,7 +80,8 @@ namespace Student
                 PreviousPosition = Position;
             }
 
-            PreviousDirection = new Point(Position.X - PreviousPosition.X, Position.Y - PreviousPosition.Y);
+            PreviousDirection = new Point(Position.X - PreviousPosition.X,
+                Position.Y - PreviousPosition.Y);
         }
     }
 }

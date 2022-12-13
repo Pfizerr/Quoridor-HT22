@@ -42,7 +42,6 @@ namespace Student
 
         public bool HasPathTo(int end)
         {
-
             return marked[end];
         }
 

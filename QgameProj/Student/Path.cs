@@ -23,15 +23,15 @@ namespace Student
             }
         }
 
-        public bool IsEmpty()
-        {
-            return first == null;
-        }
-
         public int Size
         {
             get;
             private set;
+        }
+
+        public bool IsEmpty()
+        {
+            return first == null;
         }
 
         public void Push(Point item)

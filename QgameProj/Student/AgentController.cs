@@ -71,11 +71,11 @@ namespace Student
                     k = new Point(1, 0);
                 }
 
-                if (IsPlacementValid(next, drag.typ))
+                if (IsValidPlacement(next, drag.typ))
                 {
                     return drag;
                 }
-                else if (IsPlacementValid(next - k, drag.typ))
+                else if (IsValidPlacement(next - k, drag.typ))
                 {
                     drag.point = next - k;
                     return drag;
@@ -85,7 +85,7 @@ namespace Student
             return MoveBehaviour();
         }
 
-        public bool IsPlacementValid(Point root, Typ type)
+        public bool IsValidPlacement(Point root, Typ type)
         {
             int _root = Utility.ToInt(root);
             int _extension = 0;
