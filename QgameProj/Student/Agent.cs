@@ -31,9 +31,9 @@ class Agent:BaseAgent {
             isInitialized = true;
         }
 
-        graph.Build(bräde);
-        controller.Update(bräde, graph);
-        return controller.GetPlay();
+        graph.Build(bräde); // ~ 5N^2, O(N^2)
+        controller.Update(bräde, graph); // ~ 8N^2, O(N^2)
+        return controller.GetPlay(); // ~ 3N^2, O(N^2) 
     }
 
     public override Drag GörOmDrag(SpelBräde bräde, Drag drag) 

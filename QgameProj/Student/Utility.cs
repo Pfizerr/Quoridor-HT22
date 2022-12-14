@@ -8,8 +8,10 @@ namespace Student
     {
         public static int N = SpelBräde.N;
 
-        public static int ToInt(Point pos) => pos.Y * N + pos.X;
+        public static int ToInt(Point pos) 
+            => pos.Y * N + pos.X;
 
-        public static Point ToPoint(int index) => new Point(index % N, index / N);
+        public static Point ToPoint(int index) 
+            => new Point(index % N, index / N);
     }
 }

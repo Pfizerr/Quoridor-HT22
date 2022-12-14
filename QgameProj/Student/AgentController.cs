@@ -24,7 +24,7 @@ namespace Student
 
         public Drag GetPlay()
         {
-            if (player.Path.Size > opponent.Path.Size)
+            if (player.Path.Size > opponent.Path.Size && player.RemainingWalls > 0)
             {
                 return WallBehaviour();
             }
@@ -109,7 +109,8 @@ namespace Student
                     graph.ContainsEdge(_root, _root + N) &&
                     graph.ContainsEdge(_extension, _extension + N))
                 {
-                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
+                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start),
+                        graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
 
                     if (hasPath)
                     {
@@ -125,7 +126,8 @@ namespace Student
                     graph.ContainsEdge(_root + 1, _root) &&
                     graph.ContainsEdge(_extension + 1, _extension))
                 {
-                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start), graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
+                    PredictForAlteredGraph(new BreadthFirstSearch(graph, start),
+                        graph as AdjacencyList, start, 0, _root, _extension, out hasPath);
 
                     if (hasPath)
                     {
@@ -167,7 +169,9 @@ namespace Student
             return false;
         }
 
-        public Path PredictForAlteredGraph(BreadthFirstSearch instance, AdjacencyList graph, int start, int end, int root, int ext, out bool hasPath)
+        public Path PredictForAlteredGraph(BreadthFirstSearch instance, 
+            AdjacencyList graph, int start, int end, 
+            int root, int ext, out bool hasPath)
         {
             graph.RemoveEdge(root, ext);
             instance.Search(graph, start);

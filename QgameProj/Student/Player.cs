@@ -13,8 +13,15 @@ namespace Student
             PreviousPosition = Point.Zero;
         }
 
+        public int RemainingWalls
+        {
+            get;
+            protected set;
+        }
+
         public override void Update(SpelBräde bräde, Graph graph)
         {
+            RemainingWalls = bräde.spelare[0].antalVäggar;
             base.Update(bräde, graph);
         }
     }
